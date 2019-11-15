@@ -846,8 +846,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@7.7.2", "@babel/runtime@^7.3.1":
-"@babel/runtime@7.7.2", "@babel/runtime@^7.6.3":
+"@babel/runtime@7.7.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.6.3":
   version "7.7.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.2.tgz#111a78002a5c25fc8e3361bedc9529c696b85a6a"
   integrity sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw==
@@ -8229,19 +8228,6 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.10.1.tgz#0612786bf19df406502d935494f0450b40b8294f"
   integrity sha512-BXUMf9sIOPXXZWqr7+c5SeOKJykyVr2u0UDzEf4LNGc6taGkQe1A9DFD07umCIXz45RLr9oAAwZbAJ0Pkknfaw==
 
-react-pig@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-pig/-/react-pig-1.1.0.tgz#d0d089fedced9e7f0855acc3740d43cdc3818745"
-  integrity sha512-2LuSO1sKUcuvs1fiPAYBEZSh5ZgZqMhanv7+VK3Gb3FwPUyUna/BJ2mz3XF2h0yOI9lUryxuHKN8jOro+CCUfw==
-  dependencies:
-    lodash.debounce "^4.0.8"
-    lodash.throttle "^4.1.1"
-    react-spring "^8.0.5"
-
-react-responsive-image-grid@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/react-responsive-image-grid/-/react-responsive-image-grid-0.2.1.tgz#d10da5550190f0f3eecceca505544ca8197dcb50"
-  integrity sha512-pV4YZF1Q47N9NPZsCe7x0b38g8XQbvQOuekEITEYeJZ3dtvXRcC9IJLDhmrX6WTHCiEht6VNBznxNicZOGk1qA==
 react-leaflet@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-2.5.0.tgz#834cc9fdf9385e2b30e90e6d71533e2f961d93f7"
@@ -8251,6 +8237,15 @@ react-leaflet@^2.5.0:
     fast-deep-equal "^2.0.1"
     hoist-non-react-statics "^3.3.0"
     warning "^4.0.3"
+
+react-pig@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-pig/-/react-pig-1.1.0.tgz#d0d089fedced9e7f0855acc3740d43cdc3818745"
+  integrity sha512-2LuSO1sKUcuvs1fiPAYBEZSh5ZgZqMhanv7+VK3Gb3FwPUyUna/BJ2mz3XF2h0yOI9lUryxuHKN8jOro+CCUfw==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    lodash.throttle "^4.1.1"
+    react-spring "^8.0.5"
 
 react-scripts@3.2.0:
   version "3.2.0"

@@ -19,10 +19,15 @@ export interface ImageGridTileProps {
    tile: IImageGridTile;
 }
 
-const MAX_IMAGES_COUNT = 4;
+const MAX_IMAGES_COUNT = 6;
 
-const showMoreStyled = styled.div`
-   margin-top: -100px;
+const ShowMoreStyled = styled.div`
+   width: 80px;
+   text-align:center;
+   float:right;
+   z-index: 100;
+   background-color:white;
+   border-radius: 10px;
 `
 
 const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
@@ -41,9 +46,9 @@ const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
       imageDataToShow = imageData;
    }
    let showMore;
-   // if (doNotShowAllImages) {
-   //    showMore = (<showMoreStyled><Card><div>Alle {imageData.length} anzeigen</div></Card></showMoreStyled>)
-   // }
+   if (doNotShowAllImages) {
+      showMore = (<ShowMoreStyled><a>mehr</a></ShowMoreStyled>)
+   }
 
    return (
       <div>

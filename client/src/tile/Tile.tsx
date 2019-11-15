@@ -21,6 +21,9 @@ const TileContent = styled.div`
   width: 700px;
   min-height: 50px;
   margin-bottom: 32px;
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 function getTile(tile: ITile): JSX.Element {

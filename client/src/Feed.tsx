@@ -4,11 +4,12 @@ import Tile, { ITile } from './tile/Tile';
 import useAxios from 'axios-hooks';
 
 const FeedMain = styled.main`
-  width: 100%;
+  width: calc(100% - 32px);
   display: flex;
   min-height: 100%;
   flex-direction: column;
   align-items: center;
+  padding: 16px;
 `;
 
 interface ApiMetadata {

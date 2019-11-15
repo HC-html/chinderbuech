@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 interface DayTileContent {
   weather: string;
-  date: string;
+  day: string;
 }
 
 export type IDayTile = ITile<DayTileContent>;
@@ -60,12 +60,35 @@ const WeatherIcon: React.FC<{ type: string }> = ({ type }) => {
   }
 };
 
+const days = [
+  "Sonntag",
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag",
+  "Samstag"
+];
+
+function formatDate(date: Date) {
+  const day = date
+    .getDate()
+    .toString()
+    .padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
 const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
+  console.log(tile.content.day);
+  const day = new Date(tile.content.day);
+  const date = formatDate(day);
   return (
     <DayTileContent>
-      <DayTileTitle>Mittwoch</DayTileTitle>
+      <DayTileTitle>{days[day.getDay()]}</DayTileTitle>
       <DayTileLine></DayTileLine>
-      <DayTileDate>15.11.2019</DayTileDate>
+      <DayTileDate>{date}</DayTileDate>
       <WeatherIcon type={tile.content.weather}></WeatherIcon>
     </DayTileContent>
   );

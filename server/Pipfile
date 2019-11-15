@@ -12,6 +12,7 @@ flask-cors = "*"
 flask-pymongo = "*"
 flask-jwt-extended = "*"
 flask-bcrypt = "*"
+requests = "*"
 jsonschema = "*"
 gunicorn = "*"
 

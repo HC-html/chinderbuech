@@ -1,7 +1,9 @@
 import os
 from datetime import timedelta
+from pathlib import Path
 
 from flask import Flask, jsonify, request, current_app
+from flask_cors import CORS # REMOVE THIS!!
 from flask_pymongo import PyMongo
 from flask_jwt_extended import (
     JWTManager, jwt_required,
@@ -18,7 +20,8 @@ from jsonschema.exceptions import SchemaError
 
 from chinderbuech.errors import ApiError
 from chinderbuech.schemas import user_schema
-from chinderbuech.resources import timeline_api, users_api, posts_api
+from chinderbuech.resources import timeline_api, posts_api
+
 
 
 def validate_user(data):
@@ -34,8 +37,10 @@ def validate_user(data):
 
 def make_app():
     app = Flask(__name__, static_url_path='/static')
+    CORS(app)
     app.url_map.strict_slashes = False
     app.debug = True
+    app.config['UPLOAD_FOLDER'] = Path("/static/img").resolve()
 
     # MongoDB
     app.config["MONGO_URI"] = os.environ["DB"]
@@ -51,7 +56,6 @@ def make_app():
     flask_bcrypt = Bcrypt(app)
 
     app.register_blueprint(timeline_api, url_prefix="/timeline")
-    app.register_blueprint(users_api, url_prefix="/users")
     app.register_blueprint(posts_api, url_prefix="/posts")
 
     @app.route("/register", methods=["POST"])

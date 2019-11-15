@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native';
 import 'react-html5-camera-photo/build/css/index.css';
 import axios from 'axios'
 import { AXIOS_CONFIG } from '../constants';
@@ -9,8 +8,6 @@ let cam = require("react-html5-camera-photo");
 let Camera = cam.Camera;
 let FACING_MODES = cam.FACING_MODES;
 let IMAGE_TYPES = cam.IMAGE_TYPES;
-const RES_HIGH = 1280;
-const RES_LOW = 720;
 const CameraDiv = styled.div`
    /* width: 100px; */
    position: absolute;
@@ -58,16 +55,6 @@ class ViewFinder extends Component {
       return new File([u8arr], filename, { type: mime });
    };
    render() {
-      let height, width;
-      console.log(window.innerHeight, window.innerWidth)
-      if (window.innerWidth > window.innerHeight) {
-         height = RES_LOW;
-         width = RES_HIGH;
-      } else {
-         height = RES_HIGH;
-         width = RES_LOW;
-      }
-      console.log(height, width);
       return (
          <CameraDiv>
             <ControlsRight>

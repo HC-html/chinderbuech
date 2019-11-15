@@ -48,7 +48,6 @@ const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
    if (doNotShowAllImages) {
       showMore = (<ShowMoreStyled><a>mehr</a></ShowMoreStyled>)
    }
-   console.log(imageDataToShow);
    return (
       <div>
          <Pig imageData={imageDataToShow}>

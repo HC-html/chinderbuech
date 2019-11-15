@@ -14,6 +14,8 @@ flask-jwt-extended = "*"
 flask-bcrypt = "*"
 requests = "*"
 Pillow = "*"
+numpy = "*"
+face_recognition = "*"
 jsonschema = "*"
 gunicorn = "*"
 

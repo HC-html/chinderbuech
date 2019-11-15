@@ -2,8 +2,10 @@ from datetime import datetime
 from pathlib import Path
 
 import pymongo
+import face_recognition
 from uuid import uuid4
 import requests
+import numpy as np
 from flask import Blueprint, request, jsonify
 from flask import current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -130,6 +132,55 @@ def insert_location_post():
     return jsonify({"post_id": str(post_id)}), 201
 
 
+def __learn_faces():
+    known_face_encodings = []
+    known_face_names = []
+
+    training_path = Path().absolute() / Path("chinderbuech/static/ai-training")
+    print(f"Training path {training_path}")
+    pathlist = training_path.glob('*.jpg')
+    for path in pathlist:
+        print(f"learning {path}")
+        known_image = face_recognition.load_image_file(str(path))
+        known_face_encodings.append(
+            face_recognition.face_encodings(known_image)[0]
+        )
+        known_face_names.append(str(path.stem))
+
+    return (known_face_encodings, known_face_names)
+
+def __face_detection(image_path, training):
+    """ Returns what faces were detected in the image """
+
+    known_face_encodings, known_face_names = training
+
+    unknown_image = face_recognition.load_image_file(image_path)
+    face_locations = face_recognition.face_locations(unknown_image)
+
+    print(f"There are {len(face_locations)} in this image!")
+
+    face_encodings = face_recognition.face_encodings(unknown_image)
+
+    face_names = []
+    for face_encoding in face_encodings:
+        # See if the face is a match for the known face(s)
+        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+
+        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+        best_match_index = np.argmin(face_distances)
+        if matches[best_match_index]:
+            name = known_face_names[best_match_index]
+
+        if name:
+            face_names.append(name)
+
+        face_names.append(name)
+
+    print(f"Found faces: {face_names}")
+    return face_names
+
+learned_faces = {}
+
 @posts_api.route('/image', methods=['POST'])
 #@jwt_required
 def insert_image_post():
@@ -148,7 +199,11 @@ def insert_image_post():
     file.save(file_path)
 
     # TODO: do face detection of children
+    if not learned_faces.get("faces", None):
+        learned_faces["faces"] = __learn_faces()
 
+    # https://stackoverflow.com/a/4459730/12356463
+    children = list(set(__face_detection(file_path, learned_faces["faces"])))
     with Image.open(file_path) as img:
         width, height = img.size
 
@@ -157,7 +212,7 @@ def insert_image_post():
         "content": {
             "filename": filename,
             "aspect": width / height,
-            "children": [],
+            "children": children,
 
         },
         "timestamp": datetime.now()

@@ -6,6 +6,9 @@ import useAxios from 'axios-hooks';
 const FeedMain = styled.main`
   width: 100%;
   display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Feed: React.FC = () => {
@@ -18,9 +21,11 @@ const Feed: React.FC = () => {
   console.log(data);
   return (
     <FeedMain>
-      {tiles.map((tile, index) => <Tile tile={tile} key={index}></Tile>)}
+      {tiles.map((tile, index) => (
+        <Tile tile={tile} key={index}></Tile>
+      ))}
     </FeedMain>
   );
-}
+};
 
 export default Feed;

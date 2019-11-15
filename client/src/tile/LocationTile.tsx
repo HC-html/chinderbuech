@@ -1,9 +1,8 @@
-import React from 'react';
-import { ITile } from './Tile';
+import React from "react";
+import { ITile } from "./Tile";
+import Card from "../shared/Card";
 
-interface LocationTileContent {
-
-}
+interface LocationTileContent {}
 
 export type ILocationTile = ITile<LocationTileContent>;
 export interface LocationTileProps {
@@ -12,8 +11,10 @@ export interface LocationTileProps {
 
 const LocationTile: React.FC<LocationTileProps> = ({ tile }) => {
   return (
-    <h1>Asdf</h1>
-  )
-}
+    <Card>
+      <h1>Asdf</h1>
+    </Card>
+  );
+};
 
 export default LocationTile;

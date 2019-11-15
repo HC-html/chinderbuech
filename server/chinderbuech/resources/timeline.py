@@ -97,17 +97,18 @@ def user_timeline(child):
     total_posts = current_app.mongo.db.posts.count()
     posts = list(posts_query)
 
+    def __get_image_content(image_post):
+        return {
+            "_id": image_post["_id"],
+            "url": f"/static/img/{image_post['content']['filename']}",
+            "children"
+            "aspectRatio": image_post["content"]["aspect"]
+        }
+
     def __group_images(img_posts):
         return {
             "type": "image-grid",
-            "content": { "images": [
-                    {
-                        "_id": p["_id"],
-                        "url": f"/static/img/{p['content']['filename']}",
-                        "aspectRatio": p["content"]["aspect"]
-                    } for p in img_posts
-                ]
-            },
+            "content": { "images": [__get_image_content(p) for p in img_posts]},
             "timestamp": img_posts[0]["timestamp"]
         }
 
@@ -132,8 +133,8 @@ def user_timeline(child):
             timeline.insert(1, {
                 "type": "hero",
                 "content": {
-                    "title": f"So war {child.split(' ')[0]}'s Tag",
-                    "image": post_of_the_day["content"]
+                    "title": f"So war {child.split('.')[0].capitalize()}'s Tag",
+                    "image": __get_image_content(post_of_the_day)
                 }
             })
 

@@ -13,6 +13,12 @@ from bson.json_util import dumps
 from werkzeug.utils import secure_filename
 from PIL import Image
 
+import pickle
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 
@@ -220,3 +226,63 @@ def insert_image_post():
 
     post_id = current_app.mongo.db.posts.insert_one(post).inserted_id
     return jsonify({"post_id": str(post_id)}), 201
+
+@posts_api.route('/schedule', methods=['GET'])
+#@jwt_required
+def insert_schedule_post():
+
+    # If modifying these scopes, delete the file token.pickle.
+    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+
+    """Shows basic usage of the Google Calendar API.
+    Prints the start and name of the next 10 events on the user's calendar.
+    """
+    creds = None
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    service = build('calendar', 'v3', credentials=creds)
+
+    start = datetime.utcnow().replace(hour=00, minute=00, second=00, microsecond=000).isoformat() + 'Z' # 'Z' indicates UTC time
+    end = datetime.utcnow().replace(hour=23, minute=59, second=59, microsecond=999).isoformat() + 'Z' # 'Z' indicates UTC time
+    print('Getting the upcoming 10 events')
+    events_result = service.events().list(
+        calendarId='21fbsekqbipcb7jdeseaqjf2j4@group.calendar.google.com',
+        timeMin=start,
+        timeMax=end,
+        maxResults=10,
+        singleEvents=True,
+        orderBy='startTime',
+    ).execute()
+    events = events_result.get('items', [])
+
+    if events:
+        event_names = [e['summary'] for e in events]
+        post = {
+            "type": "schedule",
+            "content": {
+                "events": events,
+
+            },
+            "timestamp": datetime.now().replace(hour=00, minute=00, second=1, microsecond=000)
+        }
+
+        post_id = current_app.mongo.db.posts.insert_one(post).inserted_id
+        return jsonify({"post_id": str(post_id)}), 201
+
+    return jsonify({"message": "No posts found for today!"}), 201

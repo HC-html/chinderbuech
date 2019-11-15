@@ -59,12 +59,26 @@ def user_timeline():
     # TODO: filter for child (only child of parent)
     posts_query = (current_app.mongo.db.posts
         .find()
-        .skip(offset)
-        .limit(limit)
+        #.skip(offset)
+        #.limit(limit)
         .sort("timestamp", pymongo.DESCENDING))
 
     total_posts = current_app.mongo.db.posts.count()
     posts = list(posts_query)
+
+    def __group_images(img_posts):
+        return {
+            "type": "image-grid",
+            "content": { "images": [
+                    {
+                        "_id": p["_id"],
+                        "url": f"/static/img/{p['content']['filename']}",
+                        "aspectRatio": p["content"]["aspect"]
+                    } for p in img_posts
+                ]
+            },
+            "timestamp": img_posts[0]["timestamp"]
+        }
 
     timeline = []
     group_posts = []
@@ -73,20 +87,12 @@ def user_timeline():
             group_posts.append(post)
         else:
             if len(group_posts) > 0:
-                timeline.append({
-                    "type": "image-grid",
-                    "content": { "images": [
-                            {
-                                "_id": p["_id"],
-                                "url": f"/static/img/{p['content']['filename']}",
-                                "aspectRatio": p["content"]["aspect"]
-                            } for p in group_posts
-                        ]
-                    },
-                    "timestamp": group_posts[0]["timestamp"]
-                })
+                timeline.append(__group_images(group_posts))
                 group_posts = []
             timeline.append(post)
+
+    if len(group_posts) > 0:
+        timeline.append(__group_images(group_posts))
 
     return dumps({
         "_links": {

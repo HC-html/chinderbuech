@@ -8,6 +8,7 @@ interface ImageGridTileContent {
 }
 interface ImageGridImage {
    url: string;
+   aspectRatio: number
 }
 
 
@@ -17,18 +18,32 @@ export interface ImageGridTileProps {
    tile: IImageGridTile;
 }
 
+const MAX_IMAGES_COUNT = 6;
 
 const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
-   let imageData = tile.content.images.map(image=>{
+   let imageData = tile.content.images.map((image, index) => {
       return {
-         url: API_URL+image.url,
-         aspectRatio: 0.5
+         url: API_URL + image.url,
+         id: index,
+         aspectRatio: image.aspectRatio
       }
-   })
+   });
+   let doNotShowAllImages = imageData.length > MAX_IMAGES_COUNT;
+   let imageDataToShow;
+   if (doNotShowAllImages) {
+      imageDataToShow = imageData.slice(0, MAX_IMAGES_COUNT);
+   } else {
+      imageDataToShow = imageData;
+   }
+   let showMore;
+   if (doNotShowAllImages) {
+      showMore = (<div>Alle {imageData.length} anzeigen</div>)
+   }
    return (
       <Card>
-         <Pig imageData={imageData}>
+         <Pig imageData={imageDataToShow}>
          </Pig>
+         {showMore}
       </Card>
    );
 };

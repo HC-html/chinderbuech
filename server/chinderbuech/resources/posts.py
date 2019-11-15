@@ -52,7 +52,7 @@ def __insert_day_post():
             "degrees": resp["main"]["temp"] - 273.15, # degrees in celsius
             "weather": resp['weather'][0]['main'].lower(),
         },
-        "timestamp": datetime.now()
+        "timestamp": datetime.now().replace(hour=23, minute=59, second=59, microsecond=999)
     }
     post_id = current_app.mongo.db.posts.insert_one(post).inserted_id
     return jsonify({"post_id": str(post_id)}), 201

@@ -9,9 +9,12 @@ const App: React.FC = () => {
   setup();
   return (
     <Router>
-      <SwipeableRoutes containerStyle={{ height: "100%" }}>
-        <Route path="/" component={Feed}></Route>
-        <Route path="/:user" component={Feed}></Route>
+      <SwipeableRoutes>
+        <Route
+          path="/:user?"
+          defaultParams={{ user: "" }}
+          component={Feed}
+        ></Route>
         <Route path="/missgebut" component={ViewFinder}></Route>
       </SwipeableRoutes>
     </Router>

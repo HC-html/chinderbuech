@@ -55,10 +55,9 @@ interface ApiMetadata {
   };
 }
 
-const Feed: React.FC = () => {
-  const { user } = useParams();
+const Feed: React.FC<any> = ({ match }) => {
   const [{ data, loading, error }] = useAxios<ApiMetadata>({
-    url: `timeline/${user || ""}`
+    url: `timeline/${match.params.user || ""}`
   });
   if (loading)
     return (

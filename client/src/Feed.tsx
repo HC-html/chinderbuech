@@ -22,7 +22,7 @@ interface ApiMetadata {
 }
 
 const Feed: React.FC = () => {
-  const [{ data, loading, error }, refetch] = useAxios<ApiMetadata>({ url: 'timeline/dummy' });
+  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: 'timeline/dummy' });
 
   if (loading) return <div>loading..</div>
   if (error) return <div>On noo :(</div>

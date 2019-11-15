@@ -15,17 +15,17 @@ interface ApiMetadata {
   count: number;
   total: number;
   posts: ITile[];
-  _links:{
+  _links: {
     self: string;
     next: string;
   }
 }
 
 const Feed: React.FC = () => {
-  const [{ data, loading, error }, refetch] = useAxios<ApiMetadata>({url : 'timeline/dummy' });
+  const [{ data, loading, error }, refetch] = useAxios<ApiMetadata>({ url: 'timeline/dummy' });
 
-  if(loading) return <div>loading..</div>
-  if(error) return <div>On noo :(</div>
+  if (loading) return <div>loading..</div>
+  if (error) return <div>On noo :(</div>
 
   return (
     <FeedMain>

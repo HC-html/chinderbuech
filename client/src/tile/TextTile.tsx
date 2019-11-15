@@ -1,5 +1,6 @@
 import { ITile } from './Tile';
 import React from "react";
+import Card from '../shared/Card';
 
 
 interface TextTileContent {
@@ -24,10 +25,10 @@ const Title: React.FC<{ title: string }> = ({ title }) => {
 
 const TextTile: React.FC<TextTileProps> = ({ tile }) => {
    return (
-      <div>
+      <Card>
          <Title title={tile.content.title}></Title>
          <Text text={tile.content.text}></Text>
-      </div>
+      </Card>
    );
 };
 

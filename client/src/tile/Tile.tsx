@@ -3,6 +3,7 @@ import LocationTile from "./LocationTile";
 import DayTile from "./DayTile";
 import TextTile from './TextTile';
 import styled from 'styled-components';
+import ImageGridTile from "./ImageGridTile";
 
 export type TileTypes = "image-grid" | "text" | "location" | "day";
 
@@ -30,6 +31,8 @@ function getTile(tile: ITile): JSX.Element {
       return <DayTile tile={tile}></DayTile>;
     case "text":
       return <TextTile tile={tile}></TextTile>
+    case "image-grid":
+      return <ImageGridTile tile={tile}></ImageGridTile>
     default:
       return <div></div>;
   }

@@ -1,29 +1,29 @@
-import React from 'react';
-import LocationTile from './LocationTile';
+import React from "react";
+import LocationTile from "./LocationTile";
 
-export type TileTypes = 'image-grid' | 'text' | 'location' | 'day';
+export type TileTypes = "image-grid" | "text" | "location" | "day";
 
 export interface ITile<T = any> {
-    type: TileTypes;
-    timestamp: Date;
-    content: T;
+  type: TileTypes;
+  timestamp: Date;
+  content: T;
 }
 
 export interface TileProps {
   tile: ITile;
 }
 
-const Tile: React.FC<TileProps> = ({ tile }) => {
-  let TileToDisplay: any;
-
-  if (tile.type === 'location') {
-    TileToDisplay = <LocationTile tile={tile}></LocationTile>
+function getTile(tile: ITile): JSX.Element {
+  switch (tile.type) {
+    case "location":
+      return <LocationTile tile={tile}></LocationTile>;
+    default:
+      return <div></div>;
   }
-  // TODO
-
-  return (
-    <TileToDisplay></TileToDisplay>
-  );
 }
+
+const Tile: React.FC<TileProps> = ({ tile }) => {
+  return <div>{getTile(tile)}</div>;
+};
 
 export default Tile;

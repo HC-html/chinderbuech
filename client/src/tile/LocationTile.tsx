@@ -12,7 +12,7 @@ export interface LocationTileProps {
 
 const LocationTile: React.FC<LocationTileProps> = ({ tile }) => {
   return (
-    <h1></h1>
+    <h1>Asdf</h1>
   )
 }
 

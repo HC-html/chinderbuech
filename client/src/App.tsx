@@ -3,9 +3,7 @@ import Feed from './Feed';
 
 const App: React.FC = () => {
   return (
-    <Feed>
-      <main></main>
-    </Feed>
+    <Feed></Feed>
   );
 }
 

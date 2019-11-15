@@ -56,7 +56,9 @@ interface ApiMetadata {
 
 const Feed: React.FC = () => {
   const { user } = useParams();
-  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: `timeline/${user}` });
+  const [{ data, loading, error }] = useAxios<ApiMetadata>({
+    url: `timeline/${user || ""}`
+  });
   if (loading)
     return (
       <Loading>
@@ -69,7 +71,7 @@ const Feed: React.FC = () => {
       <Loading>
         <span>Something went wrong :(</span>
         <small>Just like your children</small>
-        <img src="./children.svg" alt="Children"  />
+        <img src="./children.svg" alt="Children" />
       </Loading>
     );
   return (

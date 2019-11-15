@@ -33,7 +33,7 @@ def __day_exists():
             },
             "type": "day"
         }]
-    });
+    })
     print(f"Found day: {current_day}")
     return not current_day == None
 

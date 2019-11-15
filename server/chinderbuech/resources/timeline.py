@@ -50,11 +50,42 @@ def following_timeline():
     })
 """
 
-@timeline_api.route("/", methods=["GET"])
+def __get_day_of(name):
+
+    start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0);
+    end =  datetime.now().replace(hour=23, minute=59, second=59, microsecond=999);
+
+    posts_query = (current_app.mongo.db.posts
+        # get todays images of the person with 'name'
+        .find({
+            "$and": [{
+                "timestamp": {
+                    "$gte": start,
+                    "$lt": end
+                },
+                "type": "image",
+                "content.children": name
+            }]
+        })
+        .sort("timestamp", pymongo.DESCENDING))
+
+    posts = list(posts_query)
+    if len(posts) == 0:
+        print(f"No pictures of {name} found for today :( ")
+        return None
+    else:
+        print(f"Found {len(posts)} images of {name} for today!")
+        return posts[0]
+
+
+@timeline_api.route("/", defaults={'child': None})
+@timeline_api.route("/<string:child>", methods=["GET"])
 #@jwt_required
-def user_timeline():
+def user_timeline(child):
+
     offset = int(request.args.get("offset", 0))
     limit = int(request.args.get("limit", 10))
+
 
     # TODO: filter for child (only child of parent)
     posts_query = (current_app.mongo.db.posts
@@ -93,6 +124,18 @@ def user_timeline():
 
     if len(group_posts) > 0:
         timeline.append(__group_images(group_posts))
+
+    if child:
+        # insert the post of the day after the day
+        post_of_the_day = __get_day_of(child)
+        if post_of_the_day:
+            timeline.insert(1, {
+                "type": "hero",
+                "content": {
+                    "title": f"So war {child.split(' ')[0]}'s Tag",
+                    "image": post_of_the_day["content"]
+                }
+            })
 
     return dumps({
         "_links": {

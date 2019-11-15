@@ -100,16 +100,21 @@ def insert_location_post():
     try:
         lat = raw_post["latitude"]
         long = raw_post["longitude"]
+        text = raw_post.get("text", None)
     except err:
         raise (f"Failed to get weather {err}!")
 
     location = ""
     try:
-        location = requests.get(
+        loc = requests.get(
             f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={long}"
-        ).json()["display_name"]
+        ).json()
+        location = loc["display_name"]
     except err:
         print(f"Failed to get the location {err}")
+
+    if not text:
+        text = f"Grüsse aus {loc['address']['city']}"
 
     post = {
         "type": "location",
@@ -117,6 +122,7 @@ def insert_location_post():
             "longitude": long,
             "latitude": lat,
             "location": location,
+            "text": text
         },
         "timestamp": datetime.now()
     }

@@ -9,6 +9,7 @@ from flask import current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from bson.json_util import dumps
 from werkzeug.utils import secure_filename
+from PIL import Image
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -47,7 +48,7 @@ def __insert_day_post():
     post = {
         "type": "day",
         "content": {
-            "date": datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+            "date": datetime.now().replace(hour=23, minute=59, second=59, microsecond=999),
             "degrees": resp["main"]["temp"] - 273.15, # degrees in celsius
             "weather": resp['weather'][0]['main'].lower(),
         },
@@ -137,15 +138,19 @@ def insert_image_post():
         raise ApiError("No file received")
 
     filename = f"{uuid4()}{Path(file.filename).suffix}"
-    file.save(str(current_app.config['UPLOAD_FOLDER'] / filename))
+    file_path = str(current_app.config['UPLOAD_FOLDER'] / filename)
+    file.save(file_path)
 
     # TODO: do face detection of children
-    # TODO: get aspect ratio
+
+    with Image.open(file_path) as img:
+        width, height = img.size
 
     post = {
         "type": "image",
         "content": {
             "filename": filename,
+            "aspect": width / height,
             "children": [],
 
         },

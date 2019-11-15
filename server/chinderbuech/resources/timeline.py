@@ -14,102 +14,21 @@ from chinderbuech.errors import ApiError
 timeline_api = Blueprint("timeline", "timeline")
 posts_api = Blueprint("posts", "posts")
 
-@timeline_api.route("/dummy", methods=["GET"])
-def dummy_data():
 
-    posts = [
-        {
-            "type": "day",
-            "content": {
-                "day": "2016-07-27T00:00:00Z",
-                "weather": "cloudy",
-                "degrees": 6
-            },
-            "timestamp": "2016-07-27T07:45:00Z"
-        },
-        {
-            "type": "image-grid",
-            "content": { "images": [
-                {"url": "/static/img1.jpeg", "aspectRatio": 1},
-                {"url": "/static/img2.jpeg", "aspectRatio": 1},
-                {"url": "/static/img3.jpeg", "aspectRatio": 1},
-                {"url": "/static/img4.jpeg", "aspectRatio": 1},
-                {"url": "/static/img5.jpeg", "aspectRatio": 1},
-                {"url": "/static/img6.jpeg", "aspectRatio": 1},
-                {"url": "/static/img1.jpeg", "aspectRatio": 1},
-                {"url": "/static/img2.jpeg", "aspectRatio": 1},
-                {"url": "/static/img3.jpeg", "aspectRatio": 1},
-                {"url": "/static/img4.jpeg", "aspectRatio": 1},
-                {"url": "/static/img5.jpeg", "aspectRatio": 1},
-                {"url": "/static/img6.jpeg", "aspectRatio": 1},
-                {"url": "/static/img1.jpeg", "aspectRatio": 1},
-                {"url": "/static/img2.jpeg", "aspectRatio": 1},
-                {"url": "/static/img3.jpeg", "aspectRatio": 1},
-                {"url": "/static/img4.jpeg", "aspectRatio": 1},
-                {"url": "/static/img5.jpeg", "aspectRatio": 1},
-                {"url": "/static/img6.jpeg", "aspectRatio": 1},
-            ]},
-            "timestamp": "2016-07-27T00:00:00Z"
-
-        },
-        {
-            "type": "text",
-            "content": {
-                "title": "Ein tag im wald",
-                "text": "Es war schoen wir waren wandern :)"
-            },
-            "timestamp": "2016-07-27T07:45:00Z"
-        },
-        {
-            "type": "location",
-            "content": {
-                "longitude": 7.4477309,
-                "latitude":  46.9485262
-            },
-            "timestamp": "2016-07-27T07:45:00Z"
-        },
-        {
-            "type": "day",
-            "content": {
-                "day": "2016-07-26T07:45:00Z",
-                "weather": "sunny",
-                "degrees": 10
-            },
-            "timestamp": "2016-07-27T07:45:00Z"
-        },
-    ]
-
-    offset = int(request.args.get("offset", 0))
-    limit = int(request.args.get("limit", 10))
-    return dumps({
-        "_links": {
-            "self": {"href": f"/timeline?offset={offset}&limit={limit}"},
-            "next": {"href": f"/timeline?offset={offset + limit}&limit={limit}"}
-        },
-        "count": len(posts),
-        "total": len(posts) + 10 ,
-        "posts": posts
-    })
-
-
-
+"""
 @timeline_api.route("/", methods=["GET"])
-@jwt_required
+#@jwt_required
 def following_timeline():
-    current_user = get_jwt_identity()
+    #current_user = get_jwt_identity()
     offset = int(request.args.get("offset", 0))
     limit = int(request.args.get("limit", 10))
 
-    following = list(current_app.mongo.db.users.find(
-        {"username": current_user["username"]},
-        {"following": 1, "_id": 0}))[0]["following"]
+    # TODO: filter for child (only child of parent)
+    posts_query = (current_app.mongo.db.posts
+        .skip(offset)
+        .limit(limit)
+        .sort("timestamp", pymongo.DESCENDING))
 
-    following.append(current_user["username"])
-
-    posts_query = current_app.mongo.db.posts.find(
-            {"username": {"$in": following}}).skip(
-                    offset).limit(limit).sort(
-                            "timestamp", pymongo.DESCENDING)
     total_posts = current_app.mongo.db.posts.count()
     posts = list(posts_query)
 
@@ -129,31 +48,52 @@ def following_timeline():
         "total": total_posts,
         "posts": posts
     })
+"""
 
-
-@timeline_api.route("/<string:username>", methods=["GET"])
-@jwt_required
-def user_timeline(username):
+@timeline_api.route("/", methods=["GET"])
+#@jwt_required
+def user_timeline():
     offset = int(request.args.get("offset", 0))
     limit = int(request.args.get("limit", 10))
 
-    posts_query = current_app.mongo.db.posts.find({"username": username}).skip(
-            offset).limit(limit).sort("timestamp", pymongo.DESCENDING)
+    # TODO: filter for child (only child of parent)
+    posts_query = (current_app.mongo.db.posts
+        .find()
+        .skip(offset)
+        .limit(limit)
+        .sort("timestamp", pymongo.DESCENDING))
+
     total_posts = current_app.mongo.db.posts.count()
     posts = list(posts_query)
 
+    timeline = []
+    group_posts = []
     for post in posts:
-        post["reaction_summary"] = sorted([
-                (k, len(list(v))) for k, v
-                in itertools.groupby(sorted(post["reactions"], key=lambda x: x["message"]), key=lambda x: x["message"])
-                ], key=lambda x: x[1], reverse=True)
+        if post["type"] == "image":
+            group_posts.append(post)
+        else:
+            if len(group_posts) > 0:
+                timeline.append({
+                    "type": "image-grid",
+                    "content": { "images": [
+                            {
+                                "_id": p["_id"],
+                                "url": f"/static/img/{p['content']['filename']}",
+                                "aspectRatio": p["content"]["aspect"]
+                            } for p in group_posts
+                        ]
+                    },
+                    "timestamp": group_posts[0]["timestamp"]
+                })
+                group_posts = []
+            timeline.append(post)
 
     return dumps({
         "_links": {
-            "self": {"href": f"/timeline/{username}?offset={offset}&limit={limit}"},
-            "next": {"href": f"/timeline/{username}?offset={offset + limit}&limit={limit}"}
+            "self": {"href": f"/timeline/?offset={offset}&limit={limit}"},
+            "next": {"href": f"/timeline/?offset={offset + limit}&limit={limit}"}
         },
         "count": len(posts),
         "total": total_posts,
-        "posts": posts
+        "timeline": timeline
     })

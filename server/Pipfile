@@ -13,6 +13,7 @@ flask-pymongo = "*"
 flask-jwt-extended = "*"
 flask-bcrypt = "*"
 requests = "*"
+Pillow = "*"
 jsonschema = "*"
 gunicorn = "*"
 

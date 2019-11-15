@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Tile, { ITile } from "./tile/Tile";
 import useAxios from "axios-hooks";
-import { useParams } from "react-router-dom";
 import Hero from "./Hero";
 
 const FeedMain = styled.main`

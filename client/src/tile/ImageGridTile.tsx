@@ -2,7 +2,7 @@ import { ITile } from './Tile';
 import React from "react";
 import Card from '../shared/Card';
 import { API_URL } from '../constants';
-
+const Pig = require('react-pig').default;
 interface ImageGridTileContent {
    images: ImageGridImage[]
 }
@@ -18,17 +18,17 @@ export interface ImageGridTileProps {
 }
 
 
-const Image: React.FC<{ url: string }> = ({ url }) => {
-   return (<img src={url}></img>);
-}
-
-
 const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
+   let imageData = tile.content.images.map(image=>{
+      return {
+         url: API_URL+image.url,
+         aspectRatio: 0.5
+      }
+   })
    return (
       <Card>
-         {tile.content.images.map((image, index) => (
-            <Image url={API_URL+image.url} key={index}></Image>
-         ))}
+         <Pig imageData={imageData}>
+         </Pig>
       </Card>
    );
 };

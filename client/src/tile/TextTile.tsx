@@ -25,10 +25,10 @@ const Title: React.FC<{ title: string }> = ({ title }) => {
 
 const TextTile: React.FC<TextTileProps> = ({ tile }) => {
    return (
-      <Card>
+      <div>
          <Title title={tile.content.title}></Title>
          <Text text={tile.content.text}></Text>
-      </Card>
+      </div>
    );
 };
 

@@ -40,7 +40,7 @@ def make_app():
     CORS(app)
     app.url_map.strict_slashes = False
     app.debug = True
-    app.config['UPLOAD_FOLDER'] = Path("/static/img").resolve()
+    app.config['UPLOAD_FOLDER'] = Path("chinderbuech/static/img").resolve()
 
     # MongoDB
     app.config["MONGO_URI"] = os.environ["DB"]

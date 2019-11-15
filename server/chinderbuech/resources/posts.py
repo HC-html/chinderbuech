@@ -2,6 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pymongo
+from uuid import uuid4
 import requests
 from flask import Blueprint, request, jsonify
 from flask import current_app
@@ -135,10 +136,11 @@ def insert_image_post():
     if not file or not file.filename:
         raise ApiError("No file received")
 
-    filename = secure_filename(file.filename)
+    filename = f"{uuid4()}{Path(file.filename).suffix}"
     file.save(str(current_app.config['UPLOAD_FOLDER'] / filename))
 
     # TODO: do face detection of children
+    # TODO: get aspect ratio
 
     post = {
         "type": "image",

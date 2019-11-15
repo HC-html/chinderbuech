@@ -30,12 +30,24 @@ def dummy_data():
         {
             "type": "image-grid",
             "content": { "images": [
-                {"url": "/static/img1.jpeg"},
-                {"url": "/static/img2.jpeg"},
-                {"url": "/static/img3.jpeg"},
-                {"url": "/static/img4.jpeg"},
-                {"url": "/static/img5.jpeg"},
-                {"url": "/static/img6.jpeg"},
+                {"url": "/static/img1.jpeg", "aspectRatio": 1},
+                {"url": "/static/img2.jpeg", "aspectRatio": 1},
+                {"url": "/static/img3.jpeg", "aspectRatio": 1},
+                {"url": "/static/img4.jpeg", "aspectRatio": 1},
+                {"url": "/static/img5.jpeg", "aspectRatio": 1},
+                {"url": "/static/img6.jpeg", "aspectRatio": 1},
+                {"url": "/static/img1.jpeg", "aspectRatio": 1},
+                {"url": "/static/img2.jpeg", "aspectRatio": 1},
+                {"url": "/static/img3.jpeg", "aspectRatio": 1},
+                {"url": "/static/img4.jpeg", "aspectRatio": 1},
+                {"url": "/static/img5.jpeg", "aspectRatio": 1},
+                {"url": "/static/img6.jpeg", "aspectRatio": 1},
+                {"url": "/static/img1.jpeg", "aspectRatio": 1},
+                {"url": "/static/img2.jpeg", "aspectRatio": 1},
+                {"url": "/static/img3.jpeg", "aspectRatio": 1},
+                {"url": "/static/img4.jpeg", "aspectRatio": 1},
+                {"url": "/static/img5.jpeg", "aspectRatio": 1},
+                {"url": "/static/img6.jpeg", "aspectRatio": 1},
             ]},
             "timestamp": "2016-07-27T00:00:00Z"
 
@@ -51,9 +63,10 @@ def dummy_data():
         {
             "type": "location",
             "content": {
-                "long": "1.1.1.1.1.1",
-                "lat": "1.1.1.1.1"
-            }
+                "longitude": 7.4477309,
+                "latitude":  46.9485262
+            },
+            "timestamp": "2016-07-27T07:45:00Z"
         },
         {
             "type": "day",

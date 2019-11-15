@@ -9,7 +9,7 @@ const App: React.FC = () => {
   setup();
   return (
     <Router>
-      <SwipeableRoutes>
+      <SwipeableRoutes containerStyle={{ height: "100%" }}>
         <Route
           path="/:user?"
           defaultParams={{ user: "" }}

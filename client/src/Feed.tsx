@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import Tile, { ITile } from './tile/Tile';
-import useAxios from 'axios-hooks';
+import React from "react";
+import styled from "styled-components";
+import Tile, { ITile } from "./tile/Tile";
+import useAxios from "axios-hooks";
 
 const FeedMain = styled.main`
   width: 100%;
@@ -15,6 +15,29 @@ const FeedMain = styled.main`
   }
 `;
 
+const Loading = styled.main`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #616161;
+  font-weight: 200;
+  text-shadow: 2px 2px rgba(255, 255, 255, 0.8);
+  span {
+    font-size: 48px;
+  }
+  small {
+    font-size: 24px;
+    margin-bottom: 48px;
+  }
+  img {
+    width: 50%;
+    max-width: 700px;
+  }
+`;
+
 interface ApiMetadata {
   count: number;
   total: number;
@@ -22,19 +45,31 @@ interface ApiMetadata {
   _links: {
     self: {
       href: string;
-    },
-    next:
-    {
+    };
+    next: {
       href: string;
-    }
-  }
+    };
+  };
 }
 
 const Feed: React.FC = () => {
-  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: 'timeline' });
+  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: "timeline" });
 
-  if (loading) return <div>loading..</div>
-  if (error) return <div>On noo :(</div>
+  if (loading)
+    return (
+      <Loading>
+        <span>Loading...</span>
+        <img src="./children.svg" alt="Children" width="50%" />
+      </Loading>
+    );
+  if (error)
+    return (
+      <Loading>
+        <span>Something went wrong :(</span>
+        <small>Just like your children</small>
+        <img src="./children.svg" alt="Children" width="50%" />
+      </Loading>
+    );
   return (
     <FeedMain>
       {data.timeline.map((tile, index) => (

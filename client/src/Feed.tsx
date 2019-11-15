@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Tile, { ITile } from "./tile/Tile";
 import useAxios from "axios-hooks";
 import { useParams } from "react-router-dom";
+import Hero from "./Hero";
 
 const FeedMain = styled.main`
   width: 100%;
@@ -75,11 +76,14 @@ const Feed: React.FC = () => {
       </Loading>
     );
   return (
-    <FeedMain>
-      {data.timeline.map((tile, index) => (
-        <Tile tile={tile} key={index}></Tile>
-      ))}
-    </FeedMain>
+    <>
+      <Hero></Hero>
+      <FeedMain>
+        {data.timeline.map((tile, index) => (
+          <Tile tile={tile} key={index}></Tile>
+        ))}
+      </FeedMain>
+    </>
   );
 };
 

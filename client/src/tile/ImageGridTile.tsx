@@ -18,7 +18,7 @@ export interface ImageGridTileProps {
    tile: IImageGridTile;
 }
 
-const MAX_IMAGES_COUNT = 6;
+const MAX_IMAGES_COUNT = 60;
 
 const ShowMoreStyled = styled.div`
    width: 80px;
@@ -48,7 +48,7 @@ const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
    if (doNotShowAllImages) {
       showMore = (<ShowMoreStyled><a>mehr</a></ShowMoreStyled>)
    }
-
+   console.log(imageDataToShow);
    return (
       <div>
          <Pig imageData={imageDataToShow}>

@@ -10,12 +10,13 @@ const App: React.FC = () => {
   setup();
   return (
     <Router>
-      <Hero></Hero>
+      
       <Switch>
         <Route path="/missgebut">
             <ViewFinder></ViewFinder>
           </Route>
         <Route path="/">
+        <Hero></Hero>
           <Feed></Feed>
         </Route>
       </Switch>

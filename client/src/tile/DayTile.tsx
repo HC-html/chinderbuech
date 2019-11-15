@@ -81,7 +81,6 @@ function formatDate(date: Date) {
 }
 
 const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
-  console.log(tile.content);
   const day = new Date(tile.content.date.$date);
   const date = formatDate(day);
   return (

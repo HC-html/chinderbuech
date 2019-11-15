@@ -3,10 +3,12 @@ import { ITile } from "./Tile";
 import { Map, Marker, TileLayer } from "react-leaflet";
 import styled from "styled-components";
 import L from "leaflet";
+import useWindowSize from "../shared/useWindowSize";
 
 interface LocationTileContent {
   longitude: number;
   latitude: number;
+  text: string;
 }
 
 export type ILocationTile = ITile<LocationTileContent>;
@@ -15,11 +17,12 @@ export interface LocationTileProps {
 }
 
 const CardMapContainer = styled.div`
-  width: 100%;
+  width: calc(100% - 20px);
   height: 400px;
   display: inline-block;
   padding: 10px;
   background: white;
+  margin: 32px 0;
   position: relative;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.19));
   background: radial-gradient(
@@ -50,11 +53,14 @@ const CardMapContainerText = styled.div`
   font-size: 48px;
   transform: rotate(-3deg);
   color: #344360;
-  text-shadow: 2px 2px white;
+  text-shadow: 4px 4px white;
   line-height: 100%;
   padding: 20px;
   z-index: 99999;
   font-family: "Pacifico", cursive;
+  @media only screen and (max-width: 800px) {
+    font-size: 28px;
+  }
 `;
 
 const LeaftletMap = styled(Map)`
@@ -75,9 +81,10 @@ export const pointerIcon = new L.Icon({
 
 const LocationTile: React.FC<LocationTileProps> = ({ tile }) => {
   const position = [tile.content.latitude, tile.content.longitude] as any;
+  const size = useWindowSize();
   return (
     <CardMapContainer className="stamp">
-      <CardMapContainerText>Greetings from Bern</CardMapContainerText>
+      <CardMapContainerText>{tile.content.text}</CardMapContainerText>
       <LeaftletMap
         zoomControl={false}
         touchZoom={false}
@@ -87,7 +94,9 @@ const LocationTile: React.FC<LocationTileProps> = ({ tile }) => {
         center={position}
         doubleClickZoom={false}
         keyboard={false}
-        zoom={16}
+        zoom={size.width < 800 ? 14 : 15}
+        attributionControl={false}
+        tap={false}
       >
         <TileLayer url="https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png" />
         <Marker position={position} icon={pointerIcon}></Marker>

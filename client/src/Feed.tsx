@@ -11,17 +11,25 @@ const FeedMain = styled.main`
   align-items: center;
 `;
 
+interface ApiMetadata {
+  count: number;
+  total: number;
+  posts: ITile[];
+  _links:{
+    self: string;
+    next: string;
+  }
+}
+
 const Feed: React.FC = () => {
-  const tiles: ITile[] = [{
-    type: 'location',
-    content: {},
-    timestamp: new Date(),
-  }]
-  const [{ data, loading, error }, refetch] = useAxios({url : 'timeline/dummy' });
-  console.log(data);
+  const [{ data, loading, error }, refetch] = useAxios<ApiMetadata>({url : 'timeline/dummy' });
+
+  if(loading) return <div></div>
+  if(error) return <div></div>
+
   return (
     <FeedMain>
-      {tiles.map((tile, index) => (
+      {data.posts.map((tile, index) => (
         <Tile tile={tile} key={index}></Tile>
       ))}
     </FeedMain>

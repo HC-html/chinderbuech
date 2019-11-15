@@ -17,7 +17,7 @@ const FeedMain = styled.main`
 
 const Loading = styled.main`
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 300px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +33,7 @@ const Loading = styled.main`
     margin-bottom: 48px;
   }
   img {
-    width: 50%;
+    width: 30%;
     max-width: 700px;
   }
 `;
@@ -59,7 +59,7 @@ const Feed: React.FC = () => {
     return (
       <Loading>
         <span>Loading...</span>
-        <img src="./children.svg" alt="Children" width="50%" />
+        <img src="./children.svg" alt="Children" />
       </Loading>
     );
   if (error)
@@ -67,7 +67,7 @@ const Feed: React.FC = () => {
       <Loading>
         <span>Something went wrong :(</span>
         <small>Just like your children</small>
-        <img src="./children.svg" alt="Children" width="50%" />
+        <img src="./children.svg" alt="Children"  />
       </Loading>
     );
   return (

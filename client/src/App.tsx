@@ -2,14 +2,22 @@ import React from "react";
 import Feed from "./Feed";
 import { setup } from "./service";
 import Hero from "./Hero";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App: React.FC = () => {
   setup();
   return (
-    <>
+    <Router>
       <Hero></Hero>
-      <Feed></Feed>
-    </>
+      <Switch>
+        {/* <Route path="/missgebut">
+            <Users />
+          </Route> */}
+        <Route path="/">
+          <Feed></Feed>
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

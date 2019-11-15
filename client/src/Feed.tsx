@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Tile, { ITile } from "./tile/Tile";
 import useAxios from "axios-hooks";
+import { useParams } from "react-router-dom";
 
 const FeedMain = styled.main`
   width: 100%;
@@ -54,8 +55,8 @@ interface ApiMetadata {
 }
 
 const Feed: React.FC = () => {
-  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: "timeline/jonas.wyss" });
-
+  const { user } = useParams();
+  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: `timeline/${user}` });
   if (loading)
     return (
       <Loading>

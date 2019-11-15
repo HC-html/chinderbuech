@@ -13,6 +13,9 @@ const App: React.FC = () => {
         {/* <Route path="/missgebut">
             <Users />
           </Route> */}
+        <Route path="/:user">
+          <Feed></Feed>
+        </Route>
         <Route path="/">
           <Feed></Feed>
         </Route>

@@ -2,6 +2,7 @@ import { ITile } from './Tile';
 import React from "react";
 import Card from '../shared/Card';
 import { API_URL } from '../constants';
+import styled from "styled-components";
 const Pig = require('react-pig').default;
 interface ImageGridTileContent {
    images: ImageGridImage[]
@@ -18,7 +19,11 @@ export interface ImageGridTileProps {
    tile: IImageGridTile;
 }
 
-const MAX_IMAGES_COUNT = 6;
+const MAX_IMAGES_COUNT = 4;
+
+const showMoreStyled = styled.div`
+   margin-top: -100px;
+`
 
 const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
    let imageData = tile.content.images.map((image, index) => {
@@ -36,15 +41,16 @@ const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
       imageDataToShow = imageData;
    }
    let showMore;
-   if (doNotShowAllImages) {
-      showMore = (<div>Alle {imageData.length} anzeigen</div>)
-   }
+   // if (doNotShowAllImages) {
+   //    showMore = (<showMoreStyled><Card><div>Alle {imageData.length} anzeigen</div></Card></showMoreStyled>)
+   // }
+
    return (
-      <Card>
+      <div>
          <Pig imageData={imageDataToShow}>
          </Pig>
          {showMore}
-      </Card>
+      </div>
    );
 };
 

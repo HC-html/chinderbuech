@@ -15,22 +15,26 @@ const FeedMain = styled.main`
 interface ApiMetadata {
   count: number;
   total: number;
-  posts: ITile[];
+  timeline: ITile[];
   _links: {
-    self: string;
-    next: string;
+    self: {
+      href: string;
+    },
+    next:
+    {
+      href: string;
+    }
   }
 }
 
 const Feed: React.FC = () => {
-  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: 'timeline/dummy' });
+  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: 'timeline' });
 
   if (loading) return <div>loading..</div>
   if (error) return <div>On noo :(</div>
-
   return (
     <FeedMain>
-      {data.posts.map((tile, index) => (
+      {data.timeline.map((tile, index) => (
         <Tile tile={tile} key={index}></Tile>
       ))}
     </FeedMain>

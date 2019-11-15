@@ -1,7 +1,7 @@
 import { ITile } from './Tile';
 import React from "react";
 import { API_URL } from '../constants';
-import styled from 'styled-components';
+import styled from 'styled-components'
 const Pig = require('react-pig').default;
 interface ImageGridTileContent {
    images: ImageGridImage[]

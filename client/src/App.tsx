@@ -12,9 +12,13 @@ const App: React.FC = () => {
     <Router>
       
       <Switch>
+
         <Route path="/missgebut">
             <ViewFinder></ViewFinder>
           </Route>
+        <Route path="/:user">
+          <Feed></Feed>
+        </Route>
         <Route path="/">
         <Hero></Hero>
           <Feed></Feed>

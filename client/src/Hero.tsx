@@ -35,7 +35,7 @@ const HeroContent = styled.header`
 const Hero: React.FC = () => {
   return (
       <HeroContent>
-        <h1>Inderbuech</h1>
+        <h1>Chinderbuech</h1>
       </HeroContent>
   );
 };

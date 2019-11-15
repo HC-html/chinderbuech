@@ -101,7 +101,7 @@ def user_timeline(child):
         return {
             "_id": image_post["_id"],
             "url": f"/static/img/{image_post['content']['filename']}",
-            "children"
+            "children": image_post['content']['children'],
             "aspectRatio": image_post["content"]["aspect"]
         }
 

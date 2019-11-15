@@ -86,6 +86,7 @@ const LocationTile: React.FC<LocationTileProps> = ({ tile }) => {
         boxZoom={false}
         center={position}
         doubleClickZoom={false}
+        keyboard={false}
         zoom={16}
       >
         <TileLayer url="https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png" />

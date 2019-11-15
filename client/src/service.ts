@@ -1,11 +1,8 @@
 import { configure } from 'axios-hooks'
 import Axios from 'axios';
-import {API_URL} from './constants';
+import {AXIOS_CONFIG} from './constants';
 
-const axios = Axios.create({
-   baseURL: API_URL,
-   headers: { 'Access-Control-Allow-Origin': '*' }
-})
+const axios = Axios.create(AXIOS_CONFIG)
 export function setup() {
    configure({ axios });
 }

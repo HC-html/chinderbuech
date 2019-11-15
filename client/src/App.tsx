@@ -3,6 +3,8 @@ import Feed from "./Feed";
 import { setup } from "./service";
 import Hero from "./Hero";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ViewFinder from './upload/ViewFinder';
+
 
 const App: React.FC = () => {
   setup();
@@ -10,9 +12,9 @@ const App: React.FC = () => {
     <Router>
       <Hero></Hero>
       <Switch>
-        {/* <Route path="/missgebut">
-            <Users />
-          </Route> */}
+        <Route path="/missgebut">
+            <ViewFinder></ViewFinder>
+          </Route>
         <Route path="/">
           <Feed></Feed>
         </Route>

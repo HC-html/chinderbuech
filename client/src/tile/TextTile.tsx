@@ -1,6 +1,5 @@
 import { ITile } from './Tile';
 import React from "react";
-import Card from '../shared/Card';
 
 
 interface TextTileContent {

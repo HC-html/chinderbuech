@@ -2,6 +2,7 @@ from datetime import datetime
 from dateutil.parser import parse
 from pathlib import Path
 
+import cv2
 import pymongo
 import face_recognition
 from uuid import uuid4
@@ -57,11 +58,11 @@ def __insert_day_post():
     post = {
         "type": "day",
         "content": {
-            "date": datetime.now().replace(hour=23, minute=59, second=59, microsecond=999),
+            "date": datetime.now().replace(hour=00, minute=00, second=00, microsecond=000),
             "degrees": resp["main"]["temp"] - 273.15, # degrees in celsius
             "weather": resp['weather'][0]['main'].lower(),
         },
-        "timestamp": datetime.now().replace(hour=23, minute=59, second=59, microsecond=999)
+        "timestamp": datetime.now().replace(hour=23, minute=59, second=00, microsecond=000)
     }
     post_id = current_app.mongo.db.posts.insert_one(post).inserted_id
     return jsonify({"post_id": str(post_id)}), 201
@@ -240,6 +241,7 @@ def __face_detection(image_path, training):
 
         face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
         best_match_index = np.argmin(face_distances)
+        name = None
         if matches[best_match_index]:
             name = known_face_names[best_match_index]
 
@@ -250,6 +252,26 @@ def __face_detection(image_path, training):
 
     print(f"Found faces: {face_names}")
     return face_names
+
+def __classify_happiness(image_path):
+    training_path = Path().absolute() / Path("chinderbuech/static/ai-training")
+    face_cascade = cv2.CascadeClassifier(str(training_path / 'haarcascade_frontalface_default.xml'))
+    eye_cascade = cv2.CascadeClassifier(str(training_path / 'haarcascade_eye.xml'))
+    smile_cascade = cv2.CascadeClassifier(str(training_path / 'haarcascade_smile.xml'))
+
+    frame = cv2.imread(image_path)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    faces  = face_cascade.detectMultiScale(gray, 1.3, 5)
+    for (x, y, w, h) in faces:
+        cv2.rectangle(frame, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
+        roi_gray = gray[y:y + h, x:x + w]
+        roi_color = frame[y:y + h, x:x + w]
+        smiles = smile_cascade.detectMultiScale(roi_gray, 1.8, 20)
+
+        print(f"{len(smiles)} smiles detected")
+        return len(smiles)
+
 
 learned_faces = {}
 
@@ -271,14 +293,17 @@ def insert_image_post():
     file_path = str(current_app.config['UPLOAD_FOLDER'] / filename)
     file.save(file_path)
 
-    # TODO: do face detection of children
     if not learned_faces.get("faces", None):
         learned_faces["faces"] = __learn_faces()
 
+    # detect faces
     # https://stackoverflow.com/a/4459730/12356463
     children = list(set(__face_detection(file_path, learned_faces["faces"])))
     with Image.open(file_path) as img:
         width, height = img.size
+
+    # classify happiness :)
+    smiles = __classify_happiness(file_path)
 
     post = {
         "type": "image",
@@ -286,6 +311,7 @@ def insert_image_post():
             "filename": filename,
             "aspect": width / height,
             "children": children,
+            "smiles": smiles
 
         },
         "timestamp": datetime.now()

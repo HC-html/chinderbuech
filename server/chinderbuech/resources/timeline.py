@@ -67,7 +67,7 @@ def __get_day_of(name):
                 "content.children": name
             }]
         })
-        .sort("timestamp", pymongo.DESCENDING))
+        .sort("content.smiles", pymongo.DESCENDING))
 
     posts = list(posts_query)
     if len(posts) == 0:

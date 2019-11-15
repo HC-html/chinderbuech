@@ -67,7 +67,10 @@ export const pointerIcon = new L.Icon({
   iconUrl: './pin.png',
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
-  iconSize: [25, 55],
+  iconSize: [39, 55],
+  shadowUrl: './marker-shadow.png',
+  shadowSize: [68, 95],
+  shadowAnchor: [25, 92],
 });
 
 const LocationTile: React.FC<LocationTileProps> = ({ tile }) => {
@@ -82,6 +85,7 @@ const LocationTile: React.FC<LocationTileProps> = ({ tile }) => {
         dragging={false}
         boxZoom={false}
         center={position}
+        doubleClickZoom={false}
         zoom={16}
       >
         <TileLayer url="https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png" />

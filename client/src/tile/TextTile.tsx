@@ -15,7 +15,7 @@ export interface TextTileProps {
 
 
 const Text: React.FC<{ text: string }> = ({ text }) => {
-   return (<span>{text}</span>);
+   return (<p>{text}</p>);
 }
 
 const Title: React.FC<{ title: string }> = ({ title }) => {

@@ -33,7 +33,7 @@ const CardMapContainer = styled.div`
   );
   background-size: 20px 20px;
   background-position: -10px -10px;
-  transform: rotate(${Math.random() * (4 - -4) + -4}deg);
+  transform: rotate(${() => Math.random() * (4 - -4) + -4}deg);
 
   :after {
     content: "";

@@ -4,8 +4,9 @@ import DayTile from "./DayTile";
 import TextTile from "./TextTile";
 import styled from "styled-components";
 import ImageGridTile from "./ImageGridTile";
+import HeroTile from "./HeroTile";
 
-export type TileTypes = "image-grid" | "text" | "location" | "day";
+export type TileTypes = "image-grid" | "text" | "location" | "day" | "hero";
 
 export interface ITile<T = any> {
   type: TileTypes;
@@ -52,6 +53,12 @@ const Tile: React.FC<TileProps> = ({ tile }) => {
           <ImageGridTile tile={tile}></ImageGridTile>
         </TileContent>
       );
+      case "hero":
+        return (
+          <TileContent fullWidth={true}>
+            <HeroTile tile={tile}></HeroTile>
+          </TileContent>
+        );
     default:
       return <div></div>;
   }

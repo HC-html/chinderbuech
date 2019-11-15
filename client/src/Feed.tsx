@@ -9,6 +9,7 @@ const FeedMain = styled.main`
   min-height: 100%;
   flex-direction: column;
   align-items: center;
+  padding: 64px 0;
   @media only screen and (max-width: 800px) {
     width: calc(100% - 32px);
     padding: 16px;
@@ -53,7 +54,7 @@ interface ApiMetadata {
 }
 
 const Feed: React.FC = () => {
-  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: "timeline" });
+  const [{ data, loading, error }] = useAxios<ApiMetadata>({ url: "timeline/jonas.wyss" });
 
   if (loading)
     return (

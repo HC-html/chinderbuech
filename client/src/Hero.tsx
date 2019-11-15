@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const HeroContent = styled.header`
   width: 100%;
-  background: url(sky.png);
-  height: 400px;
+  background: #6C63FF;
+  height: 300px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -14,11 +14,8 @@ const HeroContent = styled.header`
   h1 {
     position: relative;
     z-index: 1;
-    top: 32px;
-    color: #860C19;
-    background: white;
-    border-radius: 32px;
-    padding: 16px;
+    top: 16px;
+    color: #E1E1F0;
   }
 
   :after {
@@ -38,7 +35,7 @@ const HeroContent = styled.header`
 const Hero: React.FC = () => {
   return (
       <HeroContent>
-        <h1>Chinderbuech</h1>
+        <h1>Inderbuech</h1>
       </HeroContent>
   );
 };

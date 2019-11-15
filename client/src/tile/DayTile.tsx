@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 interface DayTileContent {
   weather: string;
-  day: string;
+  date: { $date: number };
 }
 
 export type IDayTile = ITile<DayTileContent>;
@@ -81,8 +81,8 @@ function formatDate(date: Date) {
 }
 
 const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
-  console.log(tile.content.day);
-  const day = new Date(tile.content.day);
+  console.log(tile.content);
+  const day = new Date(tile.content.date.$date);
   const date = formatDate(day);
   return (
     <DayTileContent>

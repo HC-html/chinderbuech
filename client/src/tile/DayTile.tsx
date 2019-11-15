@@ -2,8 +2,9 @@ import React from "react";
 import { ITile } from "./Tile";
 import styled from "styled-components";
 
+type WeatherType = "sunny" | "thunderstorm" | "cloudy" | "fog" | "snow";
 interface DayTileContent {
-  weather: string;
+  weather: WeatherType;
   date: { $date: number };
 }
 
@@ -49,12 +50,17 @@ const DayTileLine = styled.hr`
   outline: 0;
 `;
 
-const WeatherIcon: React.FC<{ type: string }> = ({ type }) => {
+const WeatherIcon: React.FC<{ type: WeatherType }> = ({ type }) => {
   switch (type) {
     case "sunny":
       return <img width="100" alt={type} src="/weather/001-sunny.svg" />;
     case "cloudy":
+    case "fog":
       return <img width="100" alt={type} src="/weather/002-cloudy.svg" />;
+    case "snow":
+      return <img width="100" alt={type} src="/weather/009-snow.svg" />;
+    case "thunderstorm":
+      return <img width="100" alt={type} src="/weather/007-thunder.svg" />;
     default:
       return <img width="100" alt={type} src="/weather/001-sunny.svg" />;
   }

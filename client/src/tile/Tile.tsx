@@ -5,8 +5,15 @@ import TextTile from "./TextTile";
 import styled from "styled-components";
 import ImageGridTile from "./ImageGridTile";
 import HeroTile from "./HeroTile";
+import ScheduleTile from "./ScheduleTile";
 
-export type TileTypes = "image-grid" | "text" | "location" | "day" | "hero";
+export type TileTypes =
+  | "image-grid"
+  | "text"
+  | "location"
+  | "day"
+  | "hero"
+  | "schedule";
 
 export interface ITile<T = any> {
   type: TileTypes;
@@ -18,8 +25,13 @@ export interface TileProps {
   tile: ITile;
 }
 
-const TileContent = styled.div<{ fullWidth?: boolean }>`
-  width: ${props => (props.fullWidth ? "100%" : "700px")};
+const TileContent = styled.div<{ width?: "full" | "medium" }>`
+  width: ${props =>
+    props.width === "full"
+      ? "100%"
+      : props.width === "medium"
+      ? "1200px"
+      : "700px"};
   min-height: 50px;
   margin-bottom: 32px;
   @media only screen and (max-width: 800px) {
@@ -53,12 +65,18 @@ const Tile: React.FC<TileProps> = ({ tile }) => {
           <ImageGridTile tile={tile}></ImageGridTile>
         </TileContent>
       );
-      case "hero":
-        return (
-          <TileContent fullWidth={true}>
-            <HeroTile tile={tile}></HeroTile>
-          </TileContent>
-        );
+    case "hero":
+      return (
+        <TileContent width="full">
+          <HeroTile tile={tile}></HeroTile>
+        </TileContent>
+      );
+    case "schedule":
+      return (
+        <TileContent>
+          <ScheduleTile tile={tile}></ScheduleTile>
+        </TileContent>
+      );
     default:
       return <div></div>;
   }

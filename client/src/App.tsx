@@ -11,7 +11,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <Switch>
-        <Redirect exact from="/" to="/jonas.wyss"/>
+        <Redirect exact from="/" to="/livio.brunner"/>
         <Route path="/photo" component={ViewFinder}></Route>
         <Route path="/text" component={TextEditor}></Route>
         <Route path="/location" component={Location}></Route>

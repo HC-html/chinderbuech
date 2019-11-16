@@ -42,7 +42,7 @@ const ViewFinder: React.FC = () => {
     <CameraDiv>
       <Camera
         onTakePhoto={onTakePhoto}
-        idealFacingMode={FACING_MODES.USER}
+        idealFacingMode={FACING_MODES.ENVIRONMENT}
         imageType={IMAGE_TYPES.JPG}
         // idealResolution={{ width, height }}
         imageCompression={0.97}

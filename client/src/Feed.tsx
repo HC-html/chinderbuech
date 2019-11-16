@@ -98,7 +98,7 @@ const Feed: React.FC<any> = ({ match }) => {
         <Hero></Hero>
         <Loading>
           <span>Loading...</span>
-          <img src="./children.svg" alt="Children" />
+          <img src="/children.svg" alt="Children" />
         </Loading>
       </>
     );
@@ -109,7 +109,7 @@ const Feed: React.FC<any> = ({ match }) => {
         <Loading>
           <span>Something went wrong :(</span>
           <small>Just like your children</small>
-          <img src="./children.svg" alt="Children" />
+          <img src="/children.svg" alt="Children" />
         </Loading>
       </>
     );
@@ -120,7 +120,7 @@ const Feed: React.FC<any> = ({ match }) => {
         <Hero></Hero>
         <Loading>
           <span>Kein Tagebucheintrag gefunden ...</span>
-          <img src="./no-dairy.svg" alt="Children" />
+          <img src="/no-dairy.svg" alt="Children" />
         </Loading>
       </>
     )

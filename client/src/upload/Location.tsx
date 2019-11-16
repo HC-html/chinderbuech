@@ -4,26 +4,43 @@ import React from "react";
 import Postcard from '../shared/Postcard';
 import { AXIOS_CONFIG } from '../constants';
 import styled from "styled-components";
+import Fab from '@material-ui/core/Fab'
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+// import NavigationIcon from '@material-ui/core'
 
 let usePosition = require('use-position').usePosition;
 
-const LocationWrapper = styled.div`
-width:80%;
+
+const StyledFap = styled(Fab)`
+margin:10px;
 `
 
-function shareLocation(latitude: number, longitude: number): any {
-   axios.post('posts/location', { latitude, longitude }, AXIOS_CONFIG);
-}
+const Content = styled.div`
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   padding: 16px;
+`;
+
+
 
 const Location: React.FC<void> = ({ }) => {
-   const { latitude, longitude} = usePosition(true);
-   if (latitude && longitude) {
 
+   function shareLocation(latitude: number, longitude: number): any {
+      axios.post('posts/location', { latitude, longitude }, AXIOS_CONFIG);
+   
+   }
+
+   const { latitude, longitude } = usePosition(true);
+   if (latitude && longitude) {
       return (
-         <LocationWrapper>
+         <Content>
             <Postcard longitude={longitude} latitude={latitude} text=''></Postcard>
-            <button onClick={() => shareLocation(latitude, longitude)}>share</button>
-         </LocationWrapper>
+            <StyledFap variant="extended" aria-label="like" onClick={() => shareLocation(latitude, longitude)}>
+               <MyLocationIcon ></MyLocationIcon>
+                Standort teilen
+               </StyledFap>
+         </Content>
       );
    }
    else return <div>loading</div>

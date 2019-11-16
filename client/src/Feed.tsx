@@ -60,18 +60,24 @@ const Feed: React.FC<any> = ({ match }) => {
   });
   if (loading)
     return (
-      <Loading>
-        <span>Loading...</span>
-        <img src="./children.svg" alt="Children" />
-      </Loading>
+      <>
+        <Hero></Hero>
+        <Loading>
+          <span>Loading...</span>
+          <img src="./children.svg" alt="Children" />
+        </Loading>
+      </>
     );
   if (error)
     return (
-      <Loading>
-        <span>Something went wrong :(</span>
-        <small>Just like your children</small>
-        <img src="./children.svg" alt="Children" />
-      </Loading>
+      <>
+        <Hero></Hero>
+        <Loading>
+          <span>Something went wrong :(</span>
+          <small>Just like your children</small>
+          <img src="./children.svg" alt="Children" />
+        </Loading>
+      </>
     );
   return (
     <>

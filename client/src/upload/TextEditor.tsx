@@ -49,7 +49,8 @@ export default function TextEditor() {
       title: state.title,
       text: state.text
     }, {...AXIOS_CONFIG});
-    console.log(state);
+    setState({...state, title: ""})
+    setState({...state, text: ""})
   }
 
   return (

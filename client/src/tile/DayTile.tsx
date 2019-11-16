@@ -1,11 +1,13 @@
 import React from "react";
 import { ITile } from "./Tile";
 import styled from "styled-components";
+import Card from "../shared/Card";
 
 type WeatherType = "sunny" | "thunderstorm" | "cloudy" | "fog" | "snow";
 interface DayTileContent {
   weather: WeatherType;
   date: { $date: number };
+  events: string[];
 }
 
 export type IDayTile = ITile<DayTileContent>;
@@ -49,6 +51,14 @@ const DayTileLine = styled.hr`
   box-shadow: inset 0px 1px 1px #909193, 0px 1px 0px #fff;
   outline: 0;
 `;
+
+const StyledCard = styled(Card)`
+  width: 100%;
+  margin-top: 16px;
+  @media only screen and (max-width: 800px) {
+    width: calc(100% - 32px);
+  }
+`
 
 const WeatherIcon: React.FC<{ type: WeatherType }> = ({ type }) => {
   switch (type) {
@@ -95,6 +105,14 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
       <DayTileLine></DayTileLine>
       <DayTileDate>{date}</DayTileDate>
       <WeatherIcon type={tile.content.weather}></WeatherIcon>
+      <StyledCard>
+        <strong>Agenda</strong>
+        <ul>
+        {tile.content.events.map((value, index) => {
+          return <li key={index}>{value}</li>
+        })}
+        </ul>
+      </StyledCard>
     </DayTileContent>
   );
 };

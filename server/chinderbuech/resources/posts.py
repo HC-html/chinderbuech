@@ -59,6 +59,7 @@ def __insert_day_post():
         "type": "day",
         "content": {
             "date": datetime.now().replace(hour=00, minute=00, second=00, microsecond=000),
+            "events": __insert_schedule_post(),
             "degrees": resp["main"]["temp"] - 273.15, # degrees in celsius
             "weather": resp['weather'][0]['main'].lower(),
         },
@@ -110,8 +111,9 @@ def __insert_schedule_post():
     ).execute()
     events = events_result.get('items', [])
 
-    print(f"Adding {len(events)}")
+    return [event['summary'] for event in events]
 
+    print(f"Adding {len(events)}")
     post_ids = []
     if events:
         for event in events:
@@ -137,7 +139,6 @@ def insert_text_post():
  #   current_user = get_jwt_identity()
     if not __day_exists():
         __insert_day_post()
-        __insert_schedule_post()
 
     raw_post = request.json
     print(raw_post)
@@ -167,7 +168,6 @@ def insert_location_post():
 
     if not __day_exists():
         __insert_day_post()
-        __insert_schedule_post()
 
     raw_post = request.json
     print(raw_post)
@@ -282,7 +282,6 @@ def insert_image_post():
 
     if not __day_exists():
         __insert_day_post()
-        __insert_schedule_post()
 
     # check if the post request has the file part
     file = request.files.get("file", None)

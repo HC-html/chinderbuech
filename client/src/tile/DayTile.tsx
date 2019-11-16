@@ -59,6 +59,12 @@ const DayTileLine = styled.hr`
 const StyledCard = styled(Card)`
   flex-grow: 1;
   margin: 8px;
+  color: #424242;
+  text-shadow: none;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
 `;
 
 const Intro = styled.div`
@@ -70,6 +76,17 @@ const Intro = styled.div`
     margin: 16px;
     flex-direction: column;
   }
+`;
+
+const AgendaEvent = styled.li`
+  padding: 8px;
+  margin: 8px 0;
+  background: #6c63ff;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 `;
 
 const WeatherIcon: React.FC<{ type: WeatherType }> = ({ type }) => {
@@ -108,12 +125,32 @@ function formatDate(date: Date) {
   return `${day}.${month}.${year}`;
 }
 
-const isToday = (someDate: Date) => {
-  const today = new Date()
-  return someDate.getDate() == today.getDate() &&
-    someDate.getMonth() == today.getMonth() &&
-    someDate.getFullYear() == today.getFullYear()
+function formatHour(date: Date) {
+  const hour = date
+    .getHours()
+    .toString()
+    .padStart(2, "0");
+  const min = date
+    .getMinutes()
+    .toString()
+    .padStart(2, "0");
+  return `${hour}:${min}`;
 }
+
+function getDistance(dateA: number, dateB: number) {
+  const oneDay = 3600000 * 24;
+  const diff = dateB - dateA;
+  return (diff / oneDay) * 100 * 13;
+}
+
+const isToday = (someDate: Date) => {
+  const today = new Date();
+  return (
+    someDate.getDate() === today.getDate() &&
+    someDate.getMonth() === today.getMonth() &&
+    someDate.getFullYear() === today.getFullYear()
+  );
+};
 
 const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
   const day = new Date(tile.content.date.$date);
@@ -122,8 +159,9 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
   if (isToday(day)) {
     dayName = "Heute";
   }
+
   return (
-    <DayTileContent>   
+    <DayTileContent>
       <DayTileTitle>{dayName}</DayTileTitle>
       <DayTileLine></DayTileLine>
       <DayTileDate>{date}</DayTileDate>
@@ -134,7 +172,28 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
           <strong>Agenda</strong>
           <ul>
             {tile.content.events.map((event, index) => {
-              return <li key={index}>{event.name}</li>;
+              return (
+                <AgendaEvent
+                  key={index}
+                  style={{
+                    height: getDistance(event.start.$date, event.end.$date),
+                    flexDirection:
+                      getDistance(event.start.$date, event.end.$date) < 50
+                        ? "row"
+                        : "column"
+                  }}
+                >
+                  <div>
+                    {formatHour(new Date(event.start.$date))}
+                    &nbsp;-&nbsp;
+                    {formatHour(new Date(event.end.$date))}
+                    &nbsp;
+                  </div>
+                  <div>
+                    <strong>{event.name}</strong>
+                  </div>
+                </AgendaEvent>
+              );
             })}
           </ul>
         </StyledCard>

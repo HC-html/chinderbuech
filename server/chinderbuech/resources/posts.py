@@ -111,7 +111,11 @@ def __insert_schedule_post():
     ).execute()
     events = events_result.get('items', [])
 
-    return [event['summary'] for event in events]
+    return [{
+        "name": event['summary'],
+        "start": parse(event['start'].get('dateTime', event['start'].get('date'))),
+        "end": parse(event['end'].get('dateTime', event['end'].get('date')))
+     } for event in events]
 
     print(f"Adding {len(events)}")
     post_ids = []
@@ -317,4 +321,27 @@ def insert_image_post():
     }
 
     post_id = current_app.mongo.db.posts.insert_one(post).inserted_id
+    return jsonify({"post_id": str(post_id)}), 201
+
+
+
+@posts_api.route("/children", methods=["GET"])
+#@jwt_required
+def fuck_this():
+    child = {
+        "name": "livio.brunner",
+        "weekdays": [0,1,2,3,4,5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+    child = {
+        "name": "jonas.wyss",
+        "weekdays": [5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+
+    child = {
+        "name": "benjamin.fassbind",
+        "weekdays": [0,1]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
     return jsonify({"post_id": str(post_id)}), 201

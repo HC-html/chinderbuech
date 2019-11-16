@@ -1,5 +1,6 @@
 import itertools
 from datetime import datetime
+from datetime import timedelta
 
 import pymongo
 import requests
@@ -83,67 +84,118 @@ def __get_day_of(name):
 #@jwt_required
 def user_timeline(child):
 
-    offset = int(request.args.get("offset", 0))
-    limit = int(request.args.get("limit", 10))
+    def to_date(date_string):
+        return datetime.strptime(date_string, "%Y-%m-%d")
+    date = request.args.get('date', default = datetime.now(), type = to_date)
 
-
-    # TODO: filter for child (only child of parent)
-    posts_query = (current_app.mongo.db.posts
-        .find()
-        #.skip(offset)
-        #.limit(limit)
-        .sort("timestamp", pymongo.DESCENDING))
-
-    total_posts = current_app.mongo.db.posts.count()
-    posts = list(posts_query)
-
-    def __get_image_content(image_post):
-        return {
-            "_id": image_post["_id"],
-            "url": f"/static/img/{image_post['content']['filename']}",
-            "children": image_post['content']['children'],
-            "aspectRatio": image_post["content"]["aspect"]
-        }
-
-    def __group_images(img_posts):
-        return {
-            "type": "image-grid",
-            "content": { "images": [__get_image_content(p) for p in img_posts]},
-            "timestamp": img_posts[0]["timestamp"]
-        }
-
-    timeline = []
-    group_posts = []
-    for post in posts:
-        if post["type"] == "image":
-            group_posts.append(post)
-        else:
-            if len(group_posts) > 0:
-                timeline.append(__group_images(group_posts))
-                group_posts = []
-            timeline.append(post)
-
-    if len(group_posts) > 0:
-        timeline.append(__group_images(group_posts))
+    print(f"Got date {date}")
 
     if child:
-        # insert the post of the day after the day
-        post_of_the_day = __get_day_of(child)
-        if post_of_the_day:
-            timeline.insert(1, {
-                "type": "hero",
-                "content": {
-                    "title": f"So war {child.split('.')[0].capitalize()}'s Tag",
-                    "image": __get_image_content(post_of_the_day)
-                }
+        # calculate previous date offset
+        db_child = current_app.mongo.db.children.find_one({
+            "name": child
+        })
+
+        if not db_child:
+            raise ApiError(f"Child {child} not found!")
+
+    next_date = None
+    prev_date = None
+    if db_child:
+        offset=1
+        while not next_date:
+            if (date + timedelta(days=offset)).weekday() in db_child['weekdays']:
+                next_date = date+ timedelta(days=offset)
+            else:
+                offset = offset + 1
+
+        offset=1
+        while not prev_date:
+            if (date - timedelta(days=offset)).weekday() in db_child['weekdays']:
+                prev_date = date - timedelta(days=offset)
+            else:
+                offset = offset + 1
+    else:
+        next_date = date + timedelta(days=1)
+        prev_date = date - timedelta(days=1)
+
+    timeline = []
+    if not child or (db_child and date.weekday() in db_child['weekdays']):
+        start = date.replace(hour=0, minute=0, second=0, microsecond=0);
+        end =  date.replace(hour=23, minute=59, second=59, microsecond=999);
+
+        # Get all posts of today
+        posts_query = (current_app.mongo.db.posts
+            # get todays images of the person with 'name'
+            .find({
+                "$and": [{
+                    "timestamp": {
+                        "$gte": start,
+                        "$lt": end
+                    },
+                }]
             })
+            #.skip(offset)
+            #.limit(limit)
+            .sort("timestamp", pymongo.DESCENDING))
+
+        total_posts = current_app.mongo.db.posts.count()
+        posts = list(posts_query)
+
+        def __get_image_content(image_post):
+            return {
+                "_id": image_post["_id"],
+                "url": f"/static/img/{image_post['content']['filename']}",
+                "children": image_post['content']['children'],
+                "aspectRatio": image_post["content"]["aspect"]
+            }
+
+        def __group_images(child, img_posts):
+            if child:
+                child_filter = filter(lambda p: child in p['content']['children'], img_posts)
+                not_child_filter = filter(lambda p: not child in p['content']['children'], img_posts)
+                img_posts = list(child_filter) + list(not_child_filter)
+
+            return {
+                "type": "image-grid",
+                "content": { "images": [__get_image_content(p) for p in img_posts]},
+                "timestamp": img_posts[0]["timestamp"]
+            }
+
+        timeline = []
+        group_posts = []
+        for post in posts:
+            if post["type"] == "image":
+                group_posts.append(post)
+            else:
+                if len(group_posts) > 0:
+                    timeline.append(__group_images(child, group_posts))
+                    group_posts = []
+                timeline.append(post)
+
+        if len(group_posts) > 0:
+            timeline.append(__group_images(child, roup_posts))
+
+        if child:
+            # insert the post of the day after the day
+            post_of_the_day = __get_day_of(child)
+            if post_of_the_day:
+                timeline.insert(1, {
+                    "type": "hero",
+                    "content": {
+                        "title": f"So war {child.split('.')[0].capitalize()}'s Tag",
+                        "image": __get_image_content(post_of_the_day)
+                    }
+                })
 
     return dumps({
         "_links": {
-            "self": {"href": f"/timeline/?offset={offset}&limit={limit}"},
-            "next": {"href": f"/timeline/?offset={offset + limit}&limit={limit}"}
+            "prev": {"href": f"/timeline/{child}?date={next_date.date()}"},
+            "next": {"href": f"/timeline/{child}?date={prev_date.date()}"}
         },
-        "count": len(posts),
-        "total": total_posts,
-        "timeline": timeline
+        "timeline": timeline,
+        "dates": {
+            "next": next_date,
+            "prev": prev_date
+        }
     })

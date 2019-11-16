@@ -29,6 +29,9 @@ const Loading = styled.main`
   text-shadow: 2px 2px rgba(255, 255, 255, 0.8);
   span {
     font-size: 48px;
+    @media only screen and (max-width: 800px) {
+      font-size: 32px;
+    }
   }
   small {
     font-size: 24px;

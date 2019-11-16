@@ -1,7 +1,7 @@
 import React from "react";
 import Feed from "./Feed";
 import { setup } from "./service";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import ViewFinder from "./upload/ViewFinder";
 const SwipeableRoutes = require("react-swipeable-routes").default;
 

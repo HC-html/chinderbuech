@@ -11,11 +11,18 @@ const HeroContent = styled.header`
   position: relative;
   font-family: "Pacifico", serif;
   font-size: 32px;
+  @media only screen and (max-width: 800px) {
+    height: 200px;
+    font-size: 24px;
+  }
   h1 {
     position: relative;
     z-index: 1;
     top: 16px;
     color: #E1E1F0;
+    @media only screen and (max-width: 800px) {
+      top: 0px;
+    }
   }
 
   :after {

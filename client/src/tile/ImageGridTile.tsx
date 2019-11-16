@@ -46,7 +46,7 @@ const ImageGridTile: React.FC<ImageGridTileProps> = ({ tile }) => {
    }
    let showMore;
    if (doNotShowAllImages) {
-      showMore = (<ShowMoreStyled><a>mehr</a></ShowMoreStyled>)
+      showMore = (<ShowMoreStyled><a href="/">mehr</a></ShowMoreStyled>)
    }
    return (
       <div>

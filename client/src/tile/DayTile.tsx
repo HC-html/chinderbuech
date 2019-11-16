@@ -69,13 +69,14 @@ const StyledCard = styled(Card)`
 `;
 
 const Intro = styled.div`
-  width: 100%;
+  width: 700px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 16px;
   @media only screen and (max-width: 1000px) {
     margin: 16px;
     flex-direction: column;
+    width: 100%;
   }
 `;
 
@@ -197,7 +198,7 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
             </ul>
           </StyledCard>
           <StyledCard>
-            <strong>Anwesende Kinder:</strong>
+            <strong>Anwesende Kinder ({tile.content.children.length})</strong>
             <ul>
               {tile.content.children.map((child, index) => {
                 return <li key={index}>{child}</li>;

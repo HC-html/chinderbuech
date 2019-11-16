@@ -185,13 +185,6 @@ def user_timeline(child):
         if len(timeline) > 0 and timeline[0]['type'] == 'day':
             clist = [f"{c['name'].split('.')[0].capitalize()} {c['name'].split('.')[1].capitalize()}"
                 for c in children]
-
-            s_child = f"{child.split('.')[0].capitalize()} {child.split('.')[1].capitalize()}"
-            print(f"Search for {s_child}")
-            if s_child in clist:
-                print(f"REMOVE CHILD {child}")
-                clist.remove(s_child)
-            print("DAYYYYY!!")
             timeline[0]['content']['children'] = clist
         if child:
             # insert the post of the day after the day

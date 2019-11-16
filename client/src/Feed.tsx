@@ -12,6 +12,9 @@ import CreateIcon from "@material-ui/icons/Create";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useHistory } from "react-router";
+import Button from "@material-ui/core/Button";
+import ArrowBackLosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const FeedMain = styled.main`
   width: 100%;
@@ -50,6 +53,13 @@ const Loading = styled.main`
     width: 30%;
     max-width: 700px;
   }
+`;
+
+const DaySelect = styled.div`
+  width: 700px;
+  display: flex;
+  position: relative;
+  top: 70px;
 `;
 
 interface ApiMetadata {
@@ -123,19 +133,43 @@ const Feed: React.FC<any> = ({ match }) => {
           <img src="/no-dairy.svg" alt="Children" />
         </Loading>
       </>
-    )
+    );
   }
   return (
     <>
       <Hero></Hero>
-      <button onClick={() => go((data._links.prev.href).replace('timeline/', '').replace('?date=', '/'))}>vorheriger Tag</button>
-      <button onClick={() => go((data._links.next.href).replace('timeline/', '').replace('?date=', '/'))}> nächster Tag</button>
-
       <FeedMain>
+        <DaySelect>
+          <Button
+            onClick={() =>
+              go(
+                data._links.prev.href
+                  .replace("timeline/", "")
+                  .replace("?date=", "/")
+              )
+            }
+          >
+            <ArrowBackLosIcon />
+            vorheriger Tag
+          </Button>
+          <span style={{ flexGrow: 1 }}></span>
+          <Button
+            onClick={() =>
+              go(
+                data._links.next.href
+                  .replace("timeline/", "")
+                  .replace("?date=", "/")
+              )
+            }
+          >
+            {" "}
+            nächster Tag
+            <ArrowForwardIosIcon />
+          </Button>
+        </DaySelect>
         {data.timeline.map((tile, index) => {
-          return (<Tile tile={tile} key={index}></Tile>)
-        }
-        )}
+          return <Tile tile={tile} key={index}></Tile>;
+        })}
       </FeedMain>
       <Controls>
         <Fab color="primary" aria-label="add" onClick={handleClick}>
@@ -148,15 +182,15 @@ const Feed: React.FC<any> = ({ match }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={() => go('/photo')}>
+          <MenuItem onClick={() => go("/photo")}>
             <PhotoIcon />
             &nbsp;Photo
           </MenuItem>
-          <MenuItem onClick={() => go('/location')}>
+          <MenuItem onClick={() => go("/location")}>
             <MyLocationIcon />
             &nbsp;Ortschaft
           </MenuItem>
-          <MenuItem onClick={() => go('/text')}>
+          <MenuItem onClick={() => go("/text")}>
             <CreateIcon />
             &nbsp;Text
           </MenuItem>

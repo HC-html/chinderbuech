@@ -22,8 +22,15 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  @media only screen and (max-width: 800px) {
+    padding: 16px;
+  }
   > div {
     width: 700px;
+    @media only screen and (max-width: 800px) {
+      width: 100%;
+      width: calc(100% - 32px);
+    }
   }
 `;
 

@@ -34,7 +34,7 @@ const TileContent = styled.div<{ width?: "full" | "medium" }>`
       : "700px"};
   min-height: 50px;
   margin-bottom: 32px;
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: 1200px) {
     width: 100%;
   }
 `;
@@ -49,7 +49,7 @@ const Tile: React.FC<TileProps> = ({ tile }) => {
       );
     case "day":
       return (
-        <TileContent>
+        <TileContent width="medium">
           <DayTile tile={tile}></DayTile>
         </TileContent>
       );

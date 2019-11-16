@@ -4,10 +4,11 @@ import styled from "styled-components";
 import Card from "../shared/Card";
 
 type WeatherType = "sunny" | "thunderstorm" | "cloudy" | "fog" | "snow";
+type DateTime = { $date: number };
 interface DayTileContent {
   weather: WeatherType;
-  date: { $date: number };
-  events: string[];
+  date: DateTime;
+  events: { name: string; start: DateTime; end: DateTime }[];
 }
 
 export type IDayTile = ITile<DayTileContent>;
@@ -53,12 +54,20 @@ const DayTileLine = styled.hr`
 `;
 
 const StyledCard = styled(Card)`
+  flex-grow: 1;
+  margin: 8px;
+`;
+
+const Intro = styled.div`
   width: 100%;
-  margin-top: 16px;
-  @media only screen and (max-width: 800px) {
-    width: calc(100% - 32px);
+  display: flex;
+  flex-direction: row;
+  margin: 16px;
+  @media only screen and (max-width: 1000px) {
+    margin: 16px;
+    flex-direction: column;
   }
-`
+`;
 
 const WeatherIcon: React.FC<{ type: WeatherType }> = ({ type }) => {
   switch (type) {
@@ -99,20 +108,40 @@ function formatDate(date: Date) {
 const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
   const day = new Date(tile.content.date.$date);
   const date = formatDate(day);
+  console.log(tile);
   return (
     <DayTileContent>
       <DayTileTitle>{days[day.getDay()]}</DayTileTitle>
       <DayTileLine></DayTileLine>
       <DayTileDate>{date}</DayTileDate>
       <WeatherIcon type={tile.content.weather}></WeatherIcon>
-      <StyledCard>
-        <strong>Agenda</strong>
-        <ul>
-        {tile.content.events.map((value, index) => {
-          return <li key={index}>{value}</li>
-        })}
-        </ul>
-      </StyledCard>
+      <h1>Das wichtigste in Kürze</h1>
+      <Intro>
+        <StyledCard>
+          <strong>Agenda</strong>
+          <ul>
+            {tile.content.events.map((event, index) => {
+              return <li key={index}>{event.name}</li>;
+            })}
+          </ul>
+        </StyledCard>
+        <StyledCard>
+          <strong>Agenda</strong>
+          <ul>
+            {tile.content.events.map((event, index) => {
+              return <li key={index}>{event.name}</li>;
+            })}
+          </ul>
+        </StyledCard>
+        <StyledCard>
+          <strong>Agenda</strong>
+          <ul>
+            {tile.content.events.map((event, index) => {
+              return <li key={index}>{event.name}</li>;
+            })}
+          </ul>
+        </StyledCard>
+      </Intro>
     </DayTileContent>
   );
 };

@@ -51,10 +51,10 @@ def following_timeline():
     })
 """
 
-def __get_day_of(name):
+def __get_day_of(name, date):
 
-    start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0);
-    end =  datetime.now().replace(hour=23, minute=59, second=59, microsecond=999);
+    start = date.replace(hour=0, minute=0, second=0, microsecond=0);
+    end =  date.replace(hour=23, minute=59, second=59, microsecond=999);
 
     posts_query = (current_app.mongo.db.posts
         # get todays images of the person with 'name'
@@ -178,7 +178,7 @@ def user_timeline(child):
 
         if child:
             # insert the post of the day after the day
-            post_of_the_day = __get_day_of(child)
+            post_of_the_day = __get_day_of(child, date)
             if post_of_the_day:
                 timeline.insert(1, {
                     "type": "hero",
@@ -190,8 +190,8 @@ def user_timeline(child):
 
     return dumps({
         "_links": {
-            "prev": {"href": f"/timeline/{child}?date={next_date.date()}"},
-            "next": {"href": f"/timeline/{child}?date={prev_date.date()}"}
+            "prev": {"href": f"/timeline/{child}?date={prev_date.date()}"},
+            "next": {"href": f"/timeline/{child}?date={next_date.date()}"}
         },
         "timeline": timeline,
         "dates": {

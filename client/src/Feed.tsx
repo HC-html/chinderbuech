@@ -72,10 +72,10 @@ const Controls = styled.div`
 `;
 
 const Feed: React.FC<any> = ({ match }) => {
+  let history = useHistory();
   const [{ data, loading, error }] = useAxios<ApiMetadata>({
     url: `timeline/${match.params.user || ""}/?date=${match.params.date || ""}`
   });
-  const history = useHistory();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -127,10 +127,11 @@ const Feed: React.FC<any> = ({ match }) => {
   return (
     <>
       <Hero></Hero>
+      <button onClick={() => go((data._links.prev.href).replace('timeline/', '').replace('?date=', '/'))}>vorheriger Tag</button>
+      <button onClick={() => go((data._links.next.href).replace('timeline/', '').replace('?date=', '/'))}> nächster Tag</button>
+
       <FeedMain>
         {data.timeline.map((tile, index) => {
-          let t = tile as any;
-          t.links = data._links;
           return (<Tile tile={tile} key={index}></Tile>)
         }
         )}

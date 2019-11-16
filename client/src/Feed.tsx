@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Tile, { ITile } from "./tile/Tile";
 import useAxios from "axios-hooks";
 import Hero from "./Hero";
 import { ITextTile } from "./tile/TextTile";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import MyLocationIcon from "@material-ui/icons/MyLocation";
+import PhotoIcon from "@material-ui/icons/Photo";
+import CreateIcon from "@material-ui/icons/Create";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { useHistory } from "react-router";
 
 const FeedMain = styled.main`
   width: 100%;
@@ -57,11 +65,33 @@ interface ApiMetadata {
     };
   };
 }
+const Controls = styled.div`
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+`;
 
 const Feed: React.FC<any> = ({ match }) => {
   const [{ data, loading, error }] = useAxios<ApiMetadata>({
     url: `timeline/${match.params.user || ""}/?date=${match.params.date || ""}`
   });
+  const history = useHistory();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event: any, index?: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const go = (goto: string) => {
+    history.push(goto);
+    setAnchorEl(null);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   if (loading)
     return (
       <>
@@ -105,6 +135,31 @@ const Feed: React.FC<any> = ({ match }) => {
         }
         )}
       </FeedMain>
+      <Controls>
+        <Fab color="primary" aria-label="add" onClick={handleClick}>
+          <AddIcon />
+        </Fab>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={() => go('/photo')}>
+            <PhotoIcon />
+            &nbsp;Photo
+          </MenuItem>
+          <MenuItem onClick={() => go('/location')}>
+            <MyLocationIcon />
+            &nbsp;Ortschaft
+          </MenuItem>
+          <MenuItem onClick={() => go('/text')}>
+            <CreateIcon />
+            &nbsp;Text
+          </MenuItem>
+        </Menu>
+      </Controls>
     </>
   );
 };

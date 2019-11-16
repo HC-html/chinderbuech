@@ -44,7 +44,7 @@ const DayTileDate = styled.small`
 
 const DayTileLine = styled.hr`
   display: block;
-  width: 100%;
+  width: 700px;
   height: 1px;
   background: #eeeeee;
   position: relative;
@@ -52,6 +52,9 @@ const DayTileLine = styled.hr`
   border: 0;
   box-shadow: inset 0px 1px 1px #909193, 0px 1px 0px #fff;
   outline: 0;
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const StyledCard = styled(Card)`

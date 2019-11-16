@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import 'react-html5-camera-photo/build/css/index.css';
 import axios from 'axios'
 import { AXIOS_CONFIG } from '../constants';

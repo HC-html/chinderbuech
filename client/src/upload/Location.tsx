@@ -24,7 +24,7 @@ const Content = styled.div`
 
 
 
-const Location: React.FC<void> = ({ }) => {
+const Location: React.FC<void> = () => {
 
    function shareLocation(latitude: number, longitude: number): any {
       axios.post('posts/location', { latitude, longitude }, AXIOS_CONFIG);

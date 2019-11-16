@@ -177,6 +177,22 @@ def user_timeline(child):
         if len(group_posts) > 0:
             timeline.append(__group_images(child, roup_posts))
 
+        children = list(current_app.mongo.db.children.find({
+            "weekdays": date.weekday()
+        }))
+
+        print(f"Found children {children}")
+        if len(timeline) > 0 and timeline[0]['type'] == 'day':
+            clist = [f"{c['name'].split('.')[0].capitalize()} {c['name'].split('.')[1].capitalize()}"
+                for c in children]
+
+            s_child = f"{child.split('.')[0].capitalize()} {child.split('.')[1].capitalize()}"
+            print(f"Search for {s_child}")
+            if s_child in clist:
+                print(f"REMOVE CHILD {child}")
+                clist.remove(s_child)
+            print("DAYYYYY!!")
+            timeline[0]['content']['children'] = clist
         if child:
             # insert the post of the day after the day
             post_of_the_day = __get_day_of(child, date)

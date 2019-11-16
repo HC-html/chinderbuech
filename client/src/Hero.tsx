@@ -36,6 +36,11 @@ const HeroContent = styled.header`
     left: 0;
     background-size: 100% 100%;
     z-index: 0;
+    @media only screen and (max-width: 800px) {
+      background-size: 200% 100%;
+      background-position: center;
+      height: 50px;
+    }
   }
 `;
 

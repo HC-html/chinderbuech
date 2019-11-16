@@ -87,6 +87,7 @@ const AgendaEvent = styled.li`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  min-height: 50px;
 `;
 
 const WeatherIcon: React.FC<{ type: WeatherType }> = ({ type }) => {

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Card from "../shared/Card";
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,16 +43,16 @@ const FullWidth = styled.div`
 export default function TextEditor() {
   const classes = useStyles();
   const [state, setState] = useState<any>({});
+  const history = useHistory();
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
     axios.post('posts/text', {
       title: state.title,
       text: state.text
-    }, {...AXIOS_CONFIG});
-
-    setState({...state, title: ""})
-    setState({...state, text: ""})
+    }, {...AXIOS_CONFIG}).then(() => {
+      history.push("/")
+    });
   }
 
   return (

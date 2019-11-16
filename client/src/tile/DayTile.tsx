@@ -9,6 +9,7 @@ interface DayTileContent {
   weather: WeatherType;
   date: DateTime;
   events: { name: string; start: DateTime; end: DateTime }[];
+  children: string[];
 }
 
 export type IDayTile = ITile<DayTileContent>;
@@ -198,18 +199,10 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
           </ul>
         </StyledCard>
         <StyledCard>
-          <strong>Agenda</strong>
+          <strong>Anwesende Kinder:</strong>
           <ul>
-            {tile.content.events.map((event, index) => {
-              return <li key={index}>{event.name}</li>;
-            })}
-          </ul>
-        </StyledCard>
-        <StyledCard>
-          <strong>Agenda</strong>
-          <ul>
-            {tile.content.events.map((event, index) => {
-              return <li key={index}>{event.name}</li>;
+            {tile.content.children.map((child, index) => {
+              return <li key={index}>{child}</li>;
             })}
           </ul>
         </StyledCard>

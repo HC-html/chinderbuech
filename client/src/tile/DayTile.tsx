@@ -161,6 +161,51 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
   if (isToday(day)) {
     dayName = "Heute";
   }
+  let intro;
+  if (tile.content.events.length > 0) {
+    intro = (
+      <>
+        <h1>Das wichtigste in Kürze</h1>
+        <Intro>
+          <StyledCard>
+            <strong>Agenda</strong>
+            <ul>
+              {tile.content.events.map((event, index) => {
+                return (
+                  <AgendaEvent
+                    key={index}
+                    style={{
+                      height: getDistance(event.start.$date, event.end.$date),
+                      flexDirection:
+                        getDistance(event.start.$date, event.end.$date) < 50
+                          ? "row"
+                          : "column"
+                    }}
+                  >
+                    <div>
+                      {formatHour(new Date(event.start.$date))}
+                      &nbsp;-&nbsp;
+                {formatHour(new Date(event.end.$date))}
+                      &nbsp;
+              </div>
+                    <div>
+                      <strong>{event.name}</strong>
+                    </div>
+                  </AgendaEvent>
+                );
+              })}
+            </ul>
+          </StyledCard>
+          <StyledCard>
+            <strong>Anwesende Kinder:</strong>
+            <ul>
+              {tile.content.children.map((child, index) => {
+                return <li key={index}>{child}</li>;
+              })}
+            </ul>
+          </StyledCard>
+        </Intro></>);
+  }
 
   return (
     <DayTileContent>
@@ -168,46 +213,7 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
       <DayTileLine></DayTileLine>
       <DayTileDate>{date}</DayTileDate>
       <WeatherIcon type={tile.content.weather}></WeatherIcon>
-      <h1>Das wichtigste in Kürze</h1>
-      <Intro>
-        <StyledCard>
-          <strong>Agenda</strong>
-          <ul>
-            {tile.content.events.map((event, index) => {
-              return (
-                <AgendaEvent
-                  key={index}
-                  style={{
-                    height: getDistance(event.start.$date, event.end.$date),
-                    flexDirection:
-                      getDistance(event.start.$date, event.end.$date) < 50
-                        ? "row"
-                        : "column"
-                  }}
-                >
-                  <div>
-                    {formatHour(new Date(event.start.$date))}
-                    &nbsp;-&nbsp;
-                    {formatHour(new Date(event.end.$date))}
-                    &nbsp;
-                  </div>
-                  <div>
-                    <strong>{event.name}</strong>
-                  </div>
-                </AgendaEvent>
-              );
-            })}
-          </ul>
-        </StyledCard>
-        <StyledCard>
-          <strong>Anwesende Kinder:</strong>
-          <ul>
-            {tile.content.children.map((child, index) => {
-              return <li key={index}>{child}</li>;
-            })}
-          </ul>
-        </StyledCard>
-      </Intro>
+      {intro}
     </DayTileContent>
   );
 };

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Tile, { ITile } from "./tile/Tile";
 import useAxios from "axios-hooks";
 import Hero from "./Hero";
-import { ITextTile } from "./tile/TextTile";
+import { ITextTile } from './tile/TextTile';
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
@@ -15,6 +15,7 @@ import { useHistory } from "react-router";
 import Button from "@material-ui/core/Button";
 import ArrowBackLosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import { IDayTile } from './tile/DayTile';
 
 const FeedMain = styled.main`
   width: 100%;
@@ -130,17 +131,14 @@ const Feed: React.FC<any> = ({ match }) => {
         </Loading>
       </>
     );
-
+  let additionalinfo = (<></>);
   if (data.timeline.length === 0) {
-    return (
-      <>
-        <Hero></Hero>
-        <Loading>
-          <span>Kein Tagebucheintrag gefunden ...</span>
-          <img src="/no-dairy.svg" alt="Children" />
-        </Loading>
-      </>
-    );
+    try {
+
+      data.timeline.push({ timestamp: new Date(match.params.date), type: "day", content: { date: { $date: new Date(match.params.date).getTime() }, weather: "cloudy", events: [], children: [] } } as IDayTile);
+      data.timeline.push({ timestamp: new Date(match.params.date), type: "text", content: { title: 'Kein Tagebucheintrag gefunden ...' } } as ITextTile);
+    } catch (e) { }
+    additionalinfo = (<Loading><img src="/no-dairy.svg" alt="Children" /></Loading>);
   }
   return (
     <>
@@ -203,6 +201,7 @@ const Feed: React.FC<any> = ({ match }) => {
           </MenuItem>
         </Menu>
       </Controls>
+      {additionalinfo}
     </>
   );
 };

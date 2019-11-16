@@ -115,14 +115,15 @@ const Feed: React.FC<any> = ({ match }) => {
     );
 
   if (data.timeline.length === 0) {
-    data.timeline.push({
-      type: "text",
-      timestamp: new Date(),
-      content: {
-        text: "sorry",
-        title: "Nix Kita dise Tag",
-      }
-    } as ITextTile)
+    return (
+      <>
+        <Hero></Hero>
+        <Loading>
+          <span>Kein Tagebucheintrag gefunden ...</span>
+          <img src="./no-dairy.svg" alt="Children" />
+        </Loading>
+      </>
+    )
   }
   return (
     <>

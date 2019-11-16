@@ -60,6 +60,13 @@ const DaySelect = styled.div`
   display: flex;
   position: relative;
   top: 70px;
+  z-index: 3;
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    .text {
+      display: none;
+    }
+  }
 `;
 
 interface ApiMetadata {
@@ -150,7 +157,7 @@ const Feed: React.FC<any> = ({ match }) => {
             }
           >
             <ArrowBackLosIcon />
-            vorheriger Tag
+            <span className="text">vorheriger Tag</span>
           </Button>
           <span style={{ flexGrow: 1 }}></span>
           <Button
@@ -163,7 +170,7 @@ const Feed: React.FC<any> = ({ match }) => {
             }
           >
             {" "}
-            nächster Tag
+            <span className="text">nächster Tag</span>
             <ArrowForwardIosIcon />
           </Button>
         </DaySelect>

@@ -335,13 +335,50 @@ def fuck_this():
     kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
     child = {
         "name": "jonas.wyss",
-        "weekdays": [5]
+        "weekdays": [4,5]
     }
     kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
 
     child = {
         "name": "benjamin.fassbind",
-        "weekdays": [0,1]
+        "weekdays": [0,1,4]
     }
     kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
-    return jsonify({"post_id": str(post_id)}), 201
+
+    child = {
+        "name": "ignazio.cassis",
+        "weekdays": [0,1,2,4,5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+
+    child = {
+        "name": "alain.berset",
+        "weekdays": [0,1,2,4,5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+
+    child = {
+        "name": "karin.keller-Sutter",
+        "weekdays": [0,1,2,4,5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+
+    child = {
+        "name": "viola.amherd",
+        "weekdays": [0,1,2,3,4,5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+
+    child = {
+        "name": "guy.parmelin",
+        "weekdays": [0,1,2,3,4,5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+
+    child = {
+        "name": "simonetta.sommaruga",
+        "weekdays": [0,1,2,3,4,5]
+    }
+    kind_id = current_app.mongo.db.children.insert_one(child).inserted_id
+
+    return jsonify({"ok": True}), 201

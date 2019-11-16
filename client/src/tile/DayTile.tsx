@@ -105,13 +105,24 @@ function formatDate(date: Date) {
   return `${day}.${month}.${year}`;
 }
 
+const isToday = (someDate: Date) => {
+  const today = new Date()
+  return someDate.getDate() == today.getDate() &&
+    someDate.getMonth() == today.getMonth() &&
+    someDate.getFullYear() == today.getFullYear()
+}
+
 const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
   const day = new Date(tile.content.date.$date);
   const date = formatDate(day);
+  let dayName = days[day.getDay()];
+  if (isToday(day)) {
+    dayName = "Heute";
+  }
   console.log(tile);
   return (
     <DayTileContent>
-      <DayTileTitle>{days[day.getDay()]}</DayTileTitle>
+      <DayTileTitle>{dayName}</DayTileTitle>
       <DayTileLine></DayTileLine>
       <DayTileDate>{date}</DayTileDate>
       <WeatherIcon type={tile.content.weather}></WeatherIcon>

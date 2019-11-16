@@ -14,8 +14,8 @@ const App: React.FC = () => {
     <Router>
       <SwipeableRoutes containerStyle={{ height: "100%" }}>
         <Route
-          path="/:user?"
-          defaultParams={{ user: "" }}
+          path="/:user?/:date?"
+          defaultParams={{ user: "", date: "" }}
           component={Feed}
         ></Route>
         <Route path="/missgebut" component={ViewFinder}></Route>

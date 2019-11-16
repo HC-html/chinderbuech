@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Tile, { ITile } from "./tile/Tile";
 import useAxios from "axios-hooks";
 import Hero from "./Hero";
+import { ITextTile } from "./tile/TextTile";
 
 const FeedMain = styled.main`
   width: 100%;
@@ -48,7 +49,7 @@ interface ApiMetadata {
   total: number;
   timeline: ITile[];
   _links: {
-    self: {
+    prev: {
       href: string;
     };
     next: {
@@ -59,7 +60,7 @@ interface ApiMetadata {
 
 const Feed: React.FC<any> = ({ match }) => {
   const [{ data, loading, error }] = useAxios<ApiMetadata>({
-    url: `timeline/${match.params.user || ""}`
+    url: `timeline/${match.params.user || ""}/?date=${match.params.date || ""}`
   });
   if (loading)
     return (
@@ -82,13 +83,27 @@ const Feed: React.FC<any> = ({ match }) => {
         </Loading>
       </>
     );
+
+  if (data.timeline.length === 0) {
+    data.timeline.push({
+      type: "text",
+      timestamp: new Date(),
+      content: {
+        text: "sorry",
+        title: "Nix Kita dise Tag",
+      }
+    } as ITextTile)
+  }
   return (
     <>
       <Hero></Hero>
       <FeedMain>
-        {data.timeline.map((tile, index) => (
-          <Tile tile={tile} key={index}></Tile>
-        ))}
+        {data.timeline.map((tile, index) => {
+          let t = tile as any;
+          t.links = data._links;
+          return (<Tile tile={tile} key={index}></Tile>)
+        }
+        )}
       </FeedMain>
     </>
   );

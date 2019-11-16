@@ -2,6 +2,7 @@ import React from "react";
 import { ITile } from "./Tile";
 import styled from "styled-components";
 import Card from "../shared/Card";
+import { useHistory } from "react-router-dom";
 
 type WeatherType = "sunny" | "thunderstorm" | "cloudy" | "fog" | "snow";
 type DateTime = { $date: number };
@@ -113,16 +114,20 @@ const isToday = (someDate: Date) => {
 }
 
 const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
+  let history = useHistory();
+  console.log(history);
   const day = new Date(tile.content.date.$date);
   const date = formatDate(day);
   let dayName = days[day.getDay()];
   if (isToday(day)) {
     dayName = "Heute";
   }
-  console.log(tile);
+  let t = tile as any;
   return (
     <DayTileContent>
+      <button onClick={() => history.push((t.links.prev.href).replace('timeline/','').replace('?date=','/'))}>vorheriger Tag</button>
       <DayTileTitle>{dayName}</DayTileTitle>
+      <button onClick={() => history.push((t.links.next.href).replace('timeline/','').replace('?date=','/'))}> nächster Tag</button>
       <DayTileLine></DayTileLine>
       <DayTileDate>{date}</DayTileDate>
       <WeatherIcon type={tile.content.weather}></WeatherIcon>

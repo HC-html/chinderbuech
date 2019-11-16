@@ -175,13 +175,6 @@ const DayTile: React.FC<LocationTileProps> = ({ tile }) => {
                 return (
                   <AgendaEvent
                     key={index}
-                    style={{
-                      height: getDistance(event.start.$date, event.end.$date),
-                      flexDirection:
-                        getDistance(event.start.$date, event.end.$date) < 50
-                          ? "row"
-                          : "column"
-                    }}
                   >
                     <div>
                       {formatHour(new Date(event.start.$date))}

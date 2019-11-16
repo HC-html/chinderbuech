@@ -134,8 +134,14 @@ const Feed: React.FC<any> = ({ match }) => {
   let additionalinfo = (<></>);
   if (data.timeline.length === 0) {
     try {
+      let date;
+      if (match.params.date) {
+        date = new Date(match.params.date);
 
-      data.timeline.push({ timestamp: new Date(match.params.date), type: "day", content: { date: { $date: new Date(match.params.date).getTime() }, weather: "cloudy", events: [], children: [] } } as IDayTile);
+      } else {
+        date = new Date();
+      }
+      data.timeline.push({ timestamp: new Date(match.params.date), type: "day", content: { date: { $date: date.getTime() }, weather: "cloudy", events: [], children: [] } } as IDayTile);
       data.timeline.push({ timestamp: new Date(match.params.date), type: "text", content: { title: 'Kein Tagebucheintrag gefunden ...' } } as ITextTile);
     } catch (e) { }
     additionalinfo = (<Loading><img src="/no-dairy.svg" alt="Children" /></Loading>);

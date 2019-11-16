@@ -9,30 +9,11 @@ let Camera = cam.Camera;
 let FACING_MODES = cam.FACING_MODES;
 let IMAGE_TYPES = cam.IMAGE_TYPES;
 const CameraDiv = styled.div`
-   /* width: 100px; */
+   /* width: 100px;
    position: absolute;
-   bottom: 0px;
+   bottom: 0px; */
+   position: relative;
 `
-
-const ControlsRight = styled.div`
-   
-   width: 20%;
-   position: absolute;
-   bottom: 16px;
-   left:10px;
-   color: blue;
-   z-index: 999999999999999;
-`;
-
-const ControlsLeft = styled.div`
-   background-color:white;
-   width: 20%;
-   position: absolute;
-   bottom: 16px;
-   right: 10px;
-   color: blue;
-   z-index: 999999999999999;
-`;
 
 class ViewFinder extends Component {
    onTakePhoto(dataUri: any) {
@@ -57,12 +38,6 @@ class ViewFinder extends Component {
    render() {
       return (
          <CameraDiv>
-            <ControlsRight>
-<button>Location</button>
-            </ControlsRight>
-            <ControlsLeft>
-               <button>Text</button>
-            </ControlsLeft>
             <Camera
                onTakePhoto={(dataUri: any) => { this.onTakePhoto(dataUri); }}
                idealFacingMode={FACING_MODES.USER}

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import useWindowSize from "./useWindowSize";
 import { Map, Marker, TileLayer } from "react-leaflet";
 import L from "leaflet";
 
@@ -73,7 +72,6 @@ const Postcard: React.FC<{
   text: string;
 }> = ({ latitude, longitude, text }) => {
   const position = [latitude, longitude] as any;
-  const size = useWindowSize();
   return (
     <CardMapContainer className="stamp">
       <CardMapContainerText>{text}</CardMapContainerText>
@@ -86,7 +84,7 @@ const Postcard: React.FC<{
         center={position}
         doubleClickZoom={false}
         keyboard={false}
-        zoom={size.width < 800 ? 14 : 15}
+        zoom={15}
         attributionControl={false}
         tap={false}
       >

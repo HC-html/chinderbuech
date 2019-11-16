@@ -30,7 +30,7 @@ const TileContent = styled.div<{ width?: "full" | "medium" }>`
     props.width === "full"
       ? "100%"
       : props.width === "medium"
-      ? "1400px"
+      ? "1200px"
       : "700px"};
   min-height: 50px;
   margin-bottom: 32px;

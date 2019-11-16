@@ -90,6 +90,7 @@ def user_timeline(child):
 
     print(f"Got date {date}")
 
+    db_child = None
     if child:
         # calculate previous date offset
         db_child = current_app.mongo.db.children.find_one({

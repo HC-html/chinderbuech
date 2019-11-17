@@ -175,7 +175,7 @@ def user_timeline(child):
                 timeline.append(post)
 
         if len(group_posts) > 0:
-            timeline.append(__group_images(child, roup_posts))
+            timeline.append(__group_images(child, group_posts))
 
         children = list(current_app.mongo.db.children.find({
             "weekdays": date.weekday()
